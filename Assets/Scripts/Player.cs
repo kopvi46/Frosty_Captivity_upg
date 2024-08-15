@@ -1,18 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IHasHealth
 {
     public static Player Instance;
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameInput gameInput;
+    [SerializeField] private LayerMask fireplaceLayerMask;
 
     private int playerHealth = 100;
     private float healthChangeDelay = 3f;
     private float healtChangeTimer = 0f;
 
+    public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
 
     public int PlayerHealth 
     {  
@@ -20,15 +23,27 @@ public class Player : MonoBehaviour
         { 
             return playerHealth; 
         } 
-        set 
-        {  
-            if (value < 0)
-                {
-                    playerHealth = 0;
-                } else
+        set
+        {
+            int playerMinHealth = 0;
+            int playerMaxHealth = 100;
+            if (value < playerMinHealth)
             {
+                playerHealth = playerMinHealth;
+            } else if (value > playerMaxHealth)
+            {
+                playerHealth = playerMaxHealth;
+            } else 
+            { 
                 playerHealth = value;
             }
+
+            Debug.Log(playerHealth);
+
+            OnHealthChanged?.Invoke(this, new IHasHealth.OnHealthChangedEventArgs
+            {
+                healthNormalized = (float)PlayerHealth / playerMaxHealth
+            });
         } 
     }
 
@@ -49,14 +64,14 @@ public class Player : MonoBehaviour
             if (healtChangeTimer < 0)
             {
                 healtChangeTimer = healthChangeDelay;
-                playerHealth += 10;
+                PlayerHealth += 10;
             }
         } else
         {
             if (healtChangeTimer < 0)
             {
                 healtChangeTimer = healthChangeDelay;
-                playerHealth -= 10;
+                PlayerHealth -= 10;
             }
         }
     }
@@ -78,9 +93,14 @@ public class Player : MonoBehaviour
 
         float moveDistance = moveSpeed * Time.deltaTime;
 
-        float playerRadius = .7f;
-        float playerHeight = 2f;
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, directionVector, moveDistance);
+        float playerRadius = .6f;
+        float playerHeight = .6f;
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, directionVector, out RaycastHit hit, moveDistance);
+        if (!canMove && hit.collider.isTrigger)
+        {
+            //Player hit a trigger, so he can move towards directionVector
+            canMove = true;
+        }
 
         if (!canMove)
         {
@@ -117,8 +137,6 @@ public class Player : MonoBehaviour
         {
             transform.position += directionVector * moveDistance;
         }
-
-        //transform.position += directionVector * moveDistance;
 
         if (directionVector != Vector3.zero)
         {
