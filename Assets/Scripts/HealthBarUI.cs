@@ -15,7 +15,7 @@ public class HealthBarUI : MonoBehaviour
         hasHealth = hasHealthGameObject.GetComponent<IHasHealth>();
         if (hasHealth == null)
         {
-            Debug.LogError("Game Object " + hasHealthGameObject + " does not have a component that implemets IHasProgress");
+            Debug.LogError("Game Object " + hasHealthGameObject + " does not have a component that implemets IHasHealth");
         }
 
         hasHealth.OnHealthChanged += HasHealth_OnHealthChanged;
@@ -26,6 +26,5 @@ public class HealthBarUI : MonoBehaviour
     private void HasHealth_OnHealthChanged(object sender, IHasHealth.OnHealthChangedEventArgs e)
     {
         barImage.fillAmount = e.healthNormalized;
-        Debug.Log(e.healthNormalized);
     }
 }

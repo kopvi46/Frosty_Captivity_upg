@@ -1,14 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fireplace : MonoBehaviour
+public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
 {
     public static Fireplace Instance;
 
-    [SerializeField] private int fireplaceHealth;
+    public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
 
-    private bool isPlayerTriggered = false;
+    private int fireplaceHealth = 100;
+    private float fireplaceHealtChangeDelay = 3f;
+    private float fireplaceHealtChangeTimer = 0f;
 
     public int FireplaceHealth 
     { 
@@ -17,14 +20,24 @@ public class Fireplace : MonoBehaviour
             return fireplaceHealth; 
         } 
         set 
-        { 
-            if (value < 0)
+        {
+            int fireplaceMinHealth = 0;
+            int fireplaceMaxHealth = 100;
+            if (value < fireplaceMinHealth)
             {
-                fireplaceHealth = 0;
+                fireplaceHealth = fireplaceMinHealth;
+            } else if (value > fireplaceMaxHealth)
+            {
+                fireplaceHealth = fireplaceMaxHealth;
             } else
             {
                 fireplaceHealth = value;
             }
+
+            OnHealthChanged?.Invoke(this, new IHasHealth.OnHealthChangedEventArgs
+            {
+                healthNormalized = (float)FireplaceHealth / fireplaceMaxHealth
+            });
         } 
     }
 
@@ -33,31 +46,19 @@ public class Fireplace : MonoBehaviour
         Instance = this;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.TryGetComponent<Player>(out Player player))
-    //    {
-    //        Debug.Log("Player near fireplace!");
-    //    }
-    //}
+    private void Update()
+    {
+        fireplaceHealtChangeTimer -= Time.deltaTime;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<Player>(out Player player))
+        if (fireplaceHealtChangeTimer < 0 )
         {
-            isPlayerTriggered = true;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent<Player>(out Player player))
-        {
-            isPlayerTriggered = false;
+            fireplaceHealtChangeTimer = fireplaceHealtChangeDelay;
+            FireplaceHealth -= 1;
         }
     }
 
-    public bool GetIsPlayerTriggered()
+    public void Interact(Player player)
     {
-        return isPlayerTriggered;
+        Debug.Log("Player interacted with Fireplace!");
     }
 }

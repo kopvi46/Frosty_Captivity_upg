@@ -2,20 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour, IHasHealth
 {
     public static Player Instance;
 
+    public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
+    public event EventHandler<OnSelectedObjectChangedEventArgs> OnSelectedObjectChanged;
+    public class OnSelectedObjectChangedEventArgs : EventArgs
+    {
+        public IInteractable selectedObject;
+    }
+
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameInput gameInput;
-    [SerializeField] private LayerMask fireplaceLayerMask;
+    [SerializeField] private LayerMask interactableLayerMask;
 
     private int playerHealth = 100;
-    private float healthChangeDelay = 3f;
-    private float healtChangeTimer = 0f;
-
-    public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
+    private float playerHealthChangeDelay = 3f;
+    private float playerHealtChangeTimer = 0f;
+    private Vector3 lastInteractDirection;
+    private IInteractable selectedObject;
 
     public int PlayerHealth 
     {  
@@ -38,8 +46,6 @@ public class Player : MonoBehaviour, IHasHealth
                 playerHealth = value;
             }
 
-            Debug.Log(playerHealth);
-
             OnHealthChanged?.Invoke(this, new IHasHealth.OnHealthChangedEventArgs
             {
                 healthNormalized = (float)PlayerHealth / playerMaxHealth
@@ -56,23 +62,54 @@ public class Player : MonoBehaviour, IHasHealth
     private void Update()
     {
         HandleMovement();
+        HandleInteraction();
 
-        healtChangeTimer -= Time.deltaTime;
+        playerHealtChangeTimer -= Time.deltaTime;
 
-        if (Fireplace.Instance.GetIsPlayerTriggered())
+        if (FireplaceHeatZone.Instance.GetIsPlayerTriggered())
         {
-            if (healtChangeTimer < 0)
+            if (playerHealtChangeTimer < 0)
             {
-                healtChangeTimer = healthChangeDelay;
+                playerHealtChangeTimer = playerHealthChangeDelay;
                 PlayerHealth += 10;
             }
         } else
         {
-            if (healtChangeTimer < 0)
+            if (playerHealtChangeTimer < 0)
             {
-                healtChangeTimer = healthChangeDelay;
+                playerHealtChangeTimer = playerHealthChangeDelay;
                 PlayerHealth -= 10;
             }
+        }
+    }
+
+    private void HandleInteraction()
+    {
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+
+        Vector3 directionVector = GetDirectionVector(inputVector);
+
+        if (directionVector != Vector3.zero)
+        {
+            lastInteractDirection = directionVector;
+        }
+
+        float intreractDistance = 2f;
+        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, intreractDistance, interactableLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out IInteractable interactable))
+            {
+                if (interactable != selectedObject)
+                {
+                    SetSelectedObject(interactable);
+                }
+            } else
+            {
+                SetSelectedObject(null);
+            }
+        } else
+        {
+            SetSelectedObject(null);
         }
     }
 
@@ -80,16 +117,7 @@ public class Player : MonoBehaviour, IHasHealth
     {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
-        Vector3 cameraForward = Camera.main.transform.forward;
-        Vector3 cameraRight = Camera.main.transform.right;
-
-        cameraForward.y = 0f;
-        cameraRight.y = 0f;
-
-        cameraForward = cameraForward.normalized;
-        cameraRight = cameraRight.normalized;
-
-        Vector3 directionVector = cameraForward * inputVector.y + cameraRight * inputVector.x;
+        Vector3 directionVector = GetDirectionVector(inputVector);
 
         float moveDistance = moveSpeed * Time.deltaTime;
 
@@ -143,5 +171,31 @@ public class Player : MonoBehaviour, IHasHealth
             float rotateSpeed = 10f;
             transform.forward = Vector3.Slerp(transform.forward, directionVector, Time.deltaTime * rotateSpeed);
         }
+    }
+
+    private Vector3 GetDirectionVector(Vector2 inputVector)
+    {
+        Vector3 cameraForward = Camera.main.transform.forward;
+        Vector3 cameraRight = Camera.main.transform.right;
+
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+
+        cameraForward = cameraForward.normalized;
+        cameraRight = cameraRight.normalized;
+
+        Vector3 directionVector = cameraForward * inputVector.y + cameraRight * inputVector.x;
+
+        return directionVector;
+    }
+
+    private void SetSelectedObject(IInteractable selectedObject)
+    {
+        this.selectedObject = selectedObject;
+
+        OnSelectedObjectChanged?.Invoke(this, new OnSelectedObjectChangedEventArgs
+        {
+            selectedObject = selectedObject
+        });
     }
 }
