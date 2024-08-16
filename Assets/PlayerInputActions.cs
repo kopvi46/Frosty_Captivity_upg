@@ -44,6 +44,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GetInventorySlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac695afd-5bf6-4523-befc-a7eb80bfacb5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GetInventorySlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""6fa17ef2-ba9f-4a3f-a9c7-80371befda6d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GetInventorySlot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e7acfaf-98b1-4968-8736-61e8f0dcbb85"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +139,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f8163810-3d40-42a2-ab47-d775918dee2e"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GetInventorySlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4add683f-0e1f-40ba-afd7-b12440a70706"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GetInventorySlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9a56968-773c-4659-aaa2-1be9d8d28c8c"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GetInventorySlot3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +182,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_GetInventorySlot1 = m_Player.FindAction("GetInventorySlot1", throwIfNotFound: true);
+        m_Player_GetInventorySlot2 = m_Player.FindAction("GetInventorySlot2", throwIfNotFound: true);
+        m_Player_GetInventorySlot3 = m_Player.FindAction("GetInventorySlot3", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,12 +248,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_GetInventorySlot1;
+    private readonly InputAction m_Player_GetInventorySlot2;
+    private readonly InputAction m_Player_GetInventorySlot3;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @GetInventorySlot1 => m_Wrapper.m_Player_GetInventorySlot1;
+        public InputAction @GetInventorySlot2 => m_Wrapper.m_Player_GetInventorySlot2;
+        public InputAction @GetInventorySlot3 => m_Wrapper.m_Player_GetInventorySlot3;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -206,6 +275,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @GetInventorySlot1.started += instance.OnGetInventorySlot1;
+            @GetInventorySlot1.performed += instance.OnGetInventorySlot1;
+            @GetInventorySlot1.canceled += instance.OnGetInventorySlot1;
+            @GetInventorySlot2.started += instance.OnGetInventorySlot2;
+            @GetInventorySlot2.performed += instance.OnGetInventorySlot2;
+            @GetInventorySlot2.canceled += instance.OnGetInventorySlot2;
+            @GetInventorySlot3.started += instance.OnGetInventorySlot3;
+            @GetInventorySlot3.performed += instance.OnGetInventorySlot3;
+            @GetInventorySlot3.canceled += instance.OnGetInventorySlot3;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -216,6 +294,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @GetInventorySlot1.started -= instance.OnGetInventorySlot1;
+            @GetInventorySlot1.performed -= instance.OnGetInventorySlot1;
+            @GetInventorySlot1.canceled -= instance.OnGetInventorySlot1;
+            @GetInventorySlot2.started -= instance.OnGetInventorySlot2;
+            @GetInventorySlot2.performed -= instance.OnGetInventorySlot2;
+            @GetInventorySlot2.canceled -= instance.OnGetInventorySlot2;
+            @GetInventorySlot3.started -= instance.OnGetInventorySlot3;
+            @GetInventorySlot3.performed -= instance.OnGetInventorySlot3;
+            @GetInventorySlot3.canceled -= instance.OnGetInventorySlot3;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -237,5 +324,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnGetInventorySlot1(InputAction.CallbackContext context);
+        void OnGetInventorySlot2(InputAction.CallbackContext context);
+        void OnGetInventorySlot3(InputAction.CallbackContext context);
     }
 }
