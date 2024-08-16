@@ -18,12 +18,14 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask interactableLayerMask;
+    [SerializeField] private Transform playerLeftHandPoint;
 
     private int playerHealth = 100;
     private float playerHealthChangeDelay = 3f;
     private float playerHealtChangeTimer = 0f;
     private Vector3 lastInteractDirection;
     private IInteractable selectedObject;
+    private Item playerLeftHandHold;
 
     public int PlayerHealth 
     {  
@@ -59,6 +61,19 @@ public class Player : MonoBehaviour, IHasHealth
         Instance = this;
     }
 
+    private void Start()
+    {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
+    }
+
+    private void GameInput_OnInteractAction(object sender, EventArgs e)
+    {
+        if (selectedObject != null)
+        {
+            selectedObject.Interact();
+        }
+    }
+
     private void Update()
     {
         HandleMovement();
@@ -85,27 +100,32 @@ public class Player : MonoBehaviour, IHasHealth
 
     private void HandleInteraction()
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        float interactionRadius = 1f;
 
-        Vector3 directionVector = GetDirectionVector(inputVector);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, interactionRadius, interactableLayerMask);
 
-        if (directionVector != Vector3.zero)
+        IInteractable closestInteractable = null;
+        float closestDistanceSqr = Mathf.Infinity;
+
+        foreach (Collider collider in hitColliders)
         {
-            lastInteractDirection = directionVector;
+            if (collider.TryGetComponent(out IInteractable interactable))
+            {
+                float distanceSqr = (collider.transform.position - transform.position).sqrMagnitude;
+
+                if (distanceSqr < closestDistanceSqr)
+                {
+                    closestDistanceSqr = distanceSqr;
+                    closestInteractable = interactable;
+                }
+            }
         }
 
-        float intreractDistance = 2f;
-        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, intreractDistance, interactableLayerMask))
+        if (closestInteractable != null)
         {
-            if (raycastHit.transform.TryGetComponent(out IInteractable interactable))
+            if (closestInteractable != selectedObject)
             {
-                if (interactable != selectedObject)
-                {
-                    SetSelectedObject(interactable);
-                }
-            } else
-            {
-                SetSelectedObject(null);
+                SetSelectedObject(closestInteractable);
             }
         } else
         {

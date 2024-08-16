@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChoppedWood : MonoBehaviour, IInteractable
 {
-    public void Interact(Player player)
+    public void Interact()
     {
         Debug.Log("Player interacted with Chopped Wood!");
     }

@@ -57,8 +57,8 @@ public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
         }
     }
 
-    public void Interact(Player player)
+    public void Interact()
     {
-        Debug.Log("Player interacted with Fireplace!");
+        
     }
 }

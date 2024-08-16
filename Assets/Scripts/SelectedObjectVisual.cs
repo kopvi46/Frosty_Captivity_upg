@@ -27,6 +27,11 @@ public class SelectedObjectVisual : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        Player.Instance.OnSelectedObjectChanged -= Player_OnSelectedObjectChanged;
+    }
+
     private void Show()
     {
         foreach (GameObject visualGameObject in visualGameObjectArray)
