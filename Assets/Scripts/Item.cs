@@ -6,6 +6,7 @@ using UnityEngine;
 public class Item : MonoBehaviour, IInteractable
 {
     [SerializeField] private ItemSO itemSO;
+
     public void Interact()
     {
         Debug.Log($"Player picked {itemSO.name} !");

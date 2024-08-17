@@ -8,18 +8,19 @@ public static class Inventory
 
     public static void AddItemToInventory(Item itemPicked)
     {
-        bool hasSameItemAlready = false;
+        Item sameItem = null;
         foreach (KeyValuePair<Item, int> item in inventoryList)
         {
-            if (item.Key == itemPicked)
+
+            if (item.Key.GetItemSO().name == itemPicked.GetItemSO().name)
             {
-                hasSameItemAlready = true;
+                sameItem = item.Key;
                 break;
             }
         }
-        if (hasSameItemAlready)
+        if (sameItem != null)
         {
-            inventoryList[itemPicked]++;
+            inventoryList[sameItem]++;
         } else
         {
             inventoryList.Add(itemPicked, 1);
