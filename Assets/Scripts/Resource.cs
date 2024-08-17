@@ -8,7 +8,7 @@ public class Resource : MonoBehaviour, IInteractable
 
     private int interactionCount;
 
-    public void Interact()
+    public void Interact(Player player, Inventory inventory)
     {
         Debug.Log($"Player interacted with {resourceSO.name} !");
         
@@ -18,7 +18,7 @@ public class Resource : MonoBehaviour, IInteractable
         {
             Destroy(gameObject);
 
-            Transform itemTransform = Instantiate(resourceSO.itemSO.prefab, transform.position, transform.rotation);
+            Transform itemTransform = Instantiate(resourceSO.itemObjectSO.prefab, transform.position, transform.rotation);
         }
     }
 }

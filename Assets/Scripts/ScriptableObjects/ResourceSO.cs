@@ -6,7 +6,7 @@ using UnityEngine;
 public class ResourceSO : ScriptableObject
 {
     public Transform prefab;
-    public ItemSO itemSO;
+    public ItemSO itemObjectSO;
     public float obtainProgressMax;
     public string objectName;
 }

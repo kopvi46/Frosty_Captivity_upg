@@ -154,6 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceSO: {fileID: 11400000, guid: 222ca843d9318734c8cb20b291e287e8, type: 2}
+  itemObject: {fileID: 5305572729052619253, guid: 39ad1440b1d23264d8bd197da8af7a20,
+    type: 3}
 --- !u!1 &5769342920130401565
 GameObject:
   m_ObjectHideFlags: 0

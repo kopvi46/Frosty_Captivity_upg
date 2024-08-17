@@ -1,34 +1,48 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Inventory
+public class Inventory
 {
-    private static Dictionary<Item, int> inventoryList = new Dictionary<Item, int>();
+    public event EventHandler OnItemListChanged;
 
-    public static void AddItemToInventory(Item itemPicked)
+    private List<Item> itemList;
+
+    public Inventory()
     {
-        Item sameItem = null;
-        foreach (KeyValuePair<Item, int> item in inventoryList)
-        {
+        itemList = new List<Item>();
 
-            if (item.Key.GetItemSO().name == itemPicked.GetItemSO().name)
+        Debug.Log(itemList.Count);
+    }
+
+    public void AddItemToInventory(Item item)
+    {
+        if (item.IsStakable())
+        {
+            bool itemAlreadyInInventory = false;
+            foreach (Item inventoryItem in itemList)
             {
-                sameItem = item.Key;
-                break;
+                if (inventoryItem.GetItemSO().itemType == item.GetItemSO().itemType)
+                {
+                    inventoryItem.GetItemSO().amount++;
+                    itemAlreadyInInventory = true;
+                }
             }
-        }
-        if (sameItem != null)
+            if (!itemAlreadyInInventory)
+            {
+                itemList.Add(item);
+            }
+        } else 
         {
-            inventoryList[sameItem]++;
-        } else
-        {
-            inventoryList.Add(itemPicked, 1);
+            itemList.Add(item);
         }
 
-        foreach (KeyValuePair<Item, int> item in inventoryList)
-        {
-            Debug.Log($"{item.Key.GetItemSO().name}: {item.Value}");
-        }
+        OnItemListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public List<Item> GetItemList()
+    {
+        return itemList;
     }
 }

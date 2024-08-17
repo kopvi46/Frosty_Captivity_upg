@@ -1,23 +1,32 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ItemSO itemSO;
+    [SerializeField] private ItemSO itemObjectSO;
 
-    public void Interact()
+    public void Interact(Player player, Inventory inventory)
     {
-        Debug.Log($"Player picked {itemSO.name} !");
+        Debug.Log($"Player picked {itemObjectSO.name} !");
 
-        Inventory.AddItemToInventory(this);
+        inventory.AddItemToInventory(this);
 
         Destroy(gameObject);
     }
 
+    //public Sprite GetSprite()
+    //{
+    //    return itemObjectSO.sprite;
+    //}
+
     public ItemSO GetItemSO()
     {
-        return itemSO;
+        return itemObjectSO;
+    }
+
+    public bool IsStakable()
+    {
+        return itemObjectSO.isStackable;
     }
 }

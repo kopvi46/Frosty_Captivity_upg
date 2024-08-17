@@ -18,14 +18,16 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask interactableLayerMask;
-    [SerializeField] private Transform playerLeftHandPoint;
+    //[SerializeField] private Transform playerLeftHandPoint;
+    [SerializeField] private InventoryUI inventoryUI;
 
     private int playerHealth = 100;
     private float playerHealthChangeDelay = 3f;
     private float playerHealtChangeTimer = 0f;
     private Vector3 lastInteractDirection;
     private IInteractable selectedObject;
-    private Item playerLeftHandHold;
+    //private Item playerLeftHandHold;
+    private Inventory inventory;
 
     public int PlayerHealth 
     {  
@@ -59,6 +61,9 @@ public class Player : MonoBehaviour, IHasHealth
     private void Awake()
     {
         Instance = this;
+
+        inventory = new Inventory();
+        inventoryUI.SetInventory(inventory);
     }
 
     private void Start()
@@ -70,7 +75,7 @@ public class Player : MonoBehaviour, IHasHealth
     {
         if (selectedObject != null)
         {
-            selectedObject.Interact();
+            selectedObject.Interact(this, inventory);
         }
     }
 
