@@ -62,12 +62,48 @@ public class Player : MonoBehaviour, IHasHealth
     {
         Instance = this;
 
-        inventory = new Inventory();
-        inventoryUI.SetInventory(inventory);
+        inventory = new Inventory(UseItem);
+    }
+
+    private void UseItem(Item item)
+    {
+        if (FireplaceHeatZone.Instance.IsPlayerTriggered())
+        {
+            if (Fireplace.Instance.FireplaceHealth < Fireplace.Instance.FireplaceMaxHealth)
+            {
+                int fireplaceHealAmount;
+                switch (item.GetItemSO().itemType)
+                {
+                    case ItemSO.ItemType.ChoppedWood:
+                        fireplaceHealAmount = 5;
+                        Fireplace.Instance.FireplaceHealth += fireplaceHealAmount;
+                        break;
+                    case ItemSO.ItemType.Branch:
+                        fireplaceHealAmount = 3;
+                        Fireplace.Instance.FireplaceHealth += fireplaceHealAmount;
+                        break;
+                }
+                if (item.GetItemAmount() > 1)
+                {
+                    item.SetItemAmount(item.GetItemAmount() - 1);
+                } else
+                {
+                    inventory.RemoveItem(item);
+                }
+            } else
+            {
+                Debug.Log("Fireplace if already big enough, it`s dangerous to make it bigger!");
+            }
+        } else
+        {
+            Debug.Log("You need to be near fireplace, to use this item!");
+        }
     }
 
     private void Start()
     {
+        inventoryUI.SetInventory(inventory);
+
         gameInput.OnInteractAction += GameInput_OnInteractAction;
     }
 
@@ -86,7 +122,7 @@ public class Player : MonoBehaviour, IHasHealth
 
         playerHealtChangeTimer -= Time.deltaTime;
 
-        if (FireplaceHeatZone.Instance.GetIsPlayerTriggered())
+        if (FireplaceHeatZone.Instance.IsPlayerTriggered())
         {
             if (playerHealtChangeTimer < 0)
             {
@@ -222,5 +258,10 @@ public class Player : MonoBehaviour, IHasHealth
         {
             selectedObject = selectedObject
         });
+    }
+
+    public Vector3 GetLastInteractDirection()
+    {
+        return lastInteractDirection;
     }
 }

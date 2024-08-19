@@ -9,26 +9,26 @@ public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
 
     public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
 
-    private int fireplaceHealth = 100;
+    private int fireplaceHealth = 60;
     private float fireplaceHealtChangeDelay = 3f;
     private float fireplaceHealtChangeTimer = 0f;
 
-    public int FireplaceHealth 
-    { 
-        get 
-        {  
-            return fireplaceHealth; 
-        } 
-        set 
+    public int FireplaceMaxHealth { get; private set; } = 100;
+    public int FireplaceHealth
+    {
+        get
+        {
+            return fireplaceHealth;
+        }
+        set
         {
             int fireplaceMinHealth = 0;
-            int fireplaceMaxHealth = 100;
             if (value < fireplaceMinHealth)
             {
                 fireplaceHealth = fireplaceMinHealth;
-            } else if (value > fireplaceMaxHealth)
+            } else if (value > FireplaceMaxHealth)
             {
-                fireplaceHealth = fireplaceMaxHealth;
+                fireplaceHealth = FireplaceMaxHealth;
             } else
             {
                 fireplaceHealth = value;
@@ -36,9 +36,9 @@ public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
 
             OnHealthChanged?.Invoke(this, new IHasHealth.OnHealthChangedEventArgs
             {
-                healthNormalized = (float)FireplaceHealth / fireplaceMaxHealth
+                healthNormalized = (float)FireplaceHealth / FireplaceMaxHealth
             });
-        } 
+        }
     }
 
     private void Awake()

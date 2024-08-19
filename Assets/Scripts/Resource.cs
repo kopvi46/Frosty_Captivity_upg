@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Resource : MonoBehaviour, IInteractable
@@ -18,7 +19,29 @@ public class Resource : MonoBehaviour, IInteractable
         {
             Destroy(gameObject);
 
-            Transform itemTransform = Instantiate(resourceSO.itemObjectSO.prefab, transform.position, transform.rotation);
+            for (int i = 0; i < resourceSO.requiredSpawnItemAmount; i++)
+            {
+                SpawnItem();
+            }
         }
+    }
+
+    private void SpawnItem()
+    {
+        float spawnRadius = 2f;
+
+        Vector3 directionFromPlayer = (transform.position - Player.Instance.transform.position).normalized;
+
+        Vector3 randomOffset = Vector3.Cross(directionFromPlayer, Vector3.up).normalized * Random.Range(-spawnRadius, spawnRadius);
+
+        Vector3 spawnPosition = transform.position + directionFromPlayer * spawnRadius + randomOffset;
+
+        float randomRotation = Random.Range(0f, 360f);
+        Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
+
+        Transform itemTransform = Instantiate(resourceSO.itemSO.prefab, spawnPosition, spawnRotation);
+
+        Item newItem = itemTransform.GetComponent<Item>();
+        //newItem.SetItemAmountVisual();
     }
 }

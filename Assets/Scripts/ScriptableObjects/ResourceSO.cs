@@ -6,7 +6,8 @@ using UnityEngine;
 public class ResourceSO : ScriptableObject
 {
     public Transform prefab;
-    public ItemSO itemObjectSO;
+    public ItemSO itemSO;
     public float obtainProgressMax;
+    public float requiredSpawnItemAmount;
     public string objectName;
 }

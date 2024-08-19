@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class InventoryUI : MonoBehaviour
 
     private const string ITEM_SLOT_CONTAINER = "ItemSlotContainer";
     private const string ITEM_SLOT_TEMPLATE = "ItemSlotTemplate";
+    //private const string ITEM_BUTTON = "ItemButton";
     private const string IMAGE = "Image";
     private const string ITEM_AMOUNT = "ItemAmount";
 
@@ -20,7 +23,6 @@ public class InventoryUI : MonoBehaviour
         itemSlotContainer = transform.Find(ITEM_SLOT_CONTAINER);
         itemSlotTemplate = itemSlotContainer.Find(ITEM_SLOT_TEMPLATE);
     }
-
     public void SetInventory(Inventory inventory)
     {
         this.inventory = inventory;
@@ -43,18 +45,47 @@ public class InventoryUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (Item itemObject in inventory.GetItemList())
+        foreach (Item item in inventory.GetItemList())
         {
             RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
             itemSlotRectTransform.gameObject.SetActive(true);
 
+            InventoryClickHandler clickHandler = itemSlotRectTransform.GetComponent<InventoryClickHandler>();
+
+            if (clickHandler != null)
+            {
+                clickHandler = itemSlotRectTransform.gameObject.AddComponent<InventoryClickHandler>();
+            }
+
+            clickHandler.OnLeftClick += (sender, e) =>
+            {
+                inventory.UseItem(item);
+                RefreshInventoryItems();
+            };
+
+            clickHandler.OnRightClick += (sender, e) =>
+            {
+                if (item.GetItemAmount() > 1)
+                {
+                    item.SetItemAmount(item.GetItemAmount() - 1);
+
+                    Item.DropItem(item);
+
+                    RefreshInventoryItems();
+                } else
+                {
+                    inventory.RemoveItem(item);
+                    Item.DropItem(item);
+                }
+            };
+
             Image image = itemSlotRectTransform.Find(IMAGE).GetComponent<Image>();
-            image.sprite = itemObject.GetItemSO().sprite;
+            image.sprite = item.GetItemSO().sprite;
 
             TextMeshProUGUI itemAmount = itemSlotRectTransform.Find(ITEM_AMOUNT).GetComponent<TextMeshProUGUI>();
-            if (itemObject.GetItemSO().amount > 1)
+            if (item.GetItemAmount() > 1)
             {
-                itemAmount.SetText(itemObject.GetItemSO().amount.ToString());
+                itemAmount.SetText(item.GetItemAmount().ToString());
             } else
             {
                 itemAmount.SetText("");

@@ -17,6 +17,5 @@ public class ItemSO : ScriptableObject
     public bool isStackable;
     public Transform prefab;
     public Sprite sprite;
-    public int amount = 1;
-
+    //public int amount = 1;
 }

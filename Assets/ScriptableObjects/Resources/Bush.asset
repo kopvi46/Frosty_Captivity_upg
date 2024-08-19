@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 781ebec1245351b408598e1b09367f56, type: 3}
-  m_Name: Pine
+  m_Name: Bush
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1012475246218568479, guid: 1572353271102484e98fcd6a5ebaa90c, type: 3}
-  itemObjectSO: {fileID: 11400000, guid: a9e454caff7d4f54a9c8b0b36e7dcfc8, type: 2}
-  obtainProgressMax: 3
-  objectName: Pine
+  prefab: {fileID: 7672180627156140996, guid: f343d9ac354eb4c4eb1bdf357ec2dd51, type: 3}
+  itemSO: {fileID: 11400000, guid: 352c0f23667ed1e448ffdfb2e7f9c32e, type: 2}
+  obtainProgressMax: 2
+  requiredSpawnItemAmount: 1
+  objectName: Bush

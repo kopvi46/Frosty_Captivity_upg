@@ -28,7 +28,7 @@ public class FireplaceHeatZone : MonoBehaviour
         }
     }
 
-    public bool GetIsPlayerTriggered()
+    public bool IsPlayerTriggered()
     {
         return isPlayerTriggered;
     }
