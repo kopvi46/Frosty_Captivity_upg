@@ -1,34 +1,79 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Inventory
+public class Inventory
 {
-    private static Dictionary<Item, int> inventoryList = new Dictionary<Item, int>();
+    public event EventHandler OnItemListChanged;
 
-    public static void AddItemToInventory(Item itemPicked)
+    private List<Item> itemList;
+    private Action<Item> UseItemAction;
+
+    public Inventory(Action<Item> useItemAction)
     {
-        Item sameItem = null;
-        foreach (KeyValuePair<Item, int> item in inventoryList)
-        {
+        itemList = new List<Item>();
+        this.UseItemAction = useItemAction;
+    }
 
-            if (item.Key.GetItemSO().name == itemPicked.GetItemSO().name)
-            {
-                sameItem = item.Key;
-                break;
-            }
-        }
-        if (sameItem != null)
+    public void AddItemToInventory(Item item)
+    {
+        if (item.IsStakable())
         {
-            inventoryList[sameItem]++;
+            bool itemAlreadyInInventory = false;
+            foreach (Item inventoryItem in itemList)
+            {
+                if (inventoryItem.GetItemSO().itemType == item.GetItemSO().itemType)
+                {
+                    //inventoryItem.SetItemAmount(inventoryItem.GetItemAmount() + 1);
+                    inventoryItem.SetItemAmount(inventoryItem.GetItemAmount() + item.GetItemAmount());
+                    itemAlreadyInInventory = true;
+                }
+            }
+            if (!itemAlreadyInInventory)
+            {
+                itemList.Add(item);
+            }
         } else
         {
-            inventoryList.Add(itemPicked, 1);
+            itemList.Add(item);
         }
 
-        foreach (KeyValuePair<Item, int> item in inventoryList)
+        OnItemListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (item.IsStakable())
         {
-            Debug.Log($"{item.Key.GetItemSO().name}: {item.Value}");
+            Item itemInInventory = null;
+            foreach (Item inventoryItem in itemList)
+            {
+                if (inventoryItem.GetItemSO().itemType == item.GetItemSO().itemType)
+                {
+                    inventoryItem.SetItemAmount(inventoryItem.GetItemAmount() - item.GetItemAmount());
+                    itemInInventory = inventoryItem;
+                }
+            }
+            if (!itemInInventory && itemInInventory.GetItemAmount() <= 0)
+            {
+                itemList.Remove(itemInInventory);
+            }
+        } else
+        {
+            itemList.Remove(item);
         }
+
+        OnItemListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void UseItem(Item item)
+    {
+        UseItemAction(item);
+    }
+
+    public List<Item> GetItemList()
+    {
+        return itemList;
     }
 }
