@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private LayerMask interactableLayerMask;
     //[SerializeField] private Transform playerLeftHandPoint;
     [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private CraftWindowUI craftWindowUI;
 
     private int playerHealth = 100;
     private float playerHealthChangeDelay = 3f;
@@ -77,19 +78,33 @@ public class Player : MonoBehaviour, IHasHealth
                     case ItemSO.ItemType.ChoppedWood:
                         fireplaceHealAmount = 5;
                         Fireplace.Instance.FireplaceHealth += fireplaceHealAmount;
+                        if (item.GetItemAmount() > 1)
+                        {
+                            item.SetItemAmount(item.GetItemAmount() - 1);
+                        } else
+                        {
+                            inventory.RemoveItem(item);
+                        }
                         break;
                     case ItemSO.ItemType.Branch:
                         fireplaceHealAmount = 3;
                         Fireplace.Instance.FireplaceHealth += fireplaceHealAmount;
+                        if (item.GetItemAmount() > 1)
+                        {
+                            item.SetItemAmount(item.GetItemAmount() - 1);
+                        } else
+                        {
+                            inventory.RemoveItem(item);
+                        }
                         break;
                 }
-                if (item.GetItemAmount() > 1)
-                {
-                    item.SetItemAmount(item.GetItemAmount() - 1);
-                } else
-                {
-                    inventory.RemoveItem(item);
-                }
+                //if (item.GetItemAmount() > 1)
+                //{
+                //    item.SetItemAmount(item.GetItemAmount() - 1);
+                //} else
+                //{
+                //    inventory.RemoveItem(item);
+                //}
             } else
             {
                 Debug.Log("Fireplace if already big enough, it`s dangerous to make it bigger!");
@@ -103,6 +118,7 @@ public class Player : MonoBehaviour, IHasHealth
     private void Start()
     {
         inventoryUI.SetInventory(inventory);
+        craftWindowUI.SetInventory(inventory);
 
         gameInput.OnInteractAction += GameInput_OnInteractAction;
     }

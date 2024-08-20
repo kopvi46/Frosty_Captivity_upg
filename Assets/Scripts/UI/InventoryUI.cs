@@ -14,7 +14,6 @@ public class InventoryUI : MonoBehaviour
 
     private const string ITEM_SLOT_CONTAINER = "ItemSlotContainer";
     private const string ITEM_SLOT_TEMPLATE = "ItemSlotTemplate";
-    //private const string ITEM_BUTTON = "ItemButton";
     private const string IMAGE = "Image";
     private const string ITEM_AMOUNT = "ItemAmount";
 

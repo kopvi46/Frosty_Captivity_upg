@@ -8,6 +8,6 @@ public class ResourceSO : ScriptableObject
     public Transform prefab;
     public ItemSO itemSO;
     public float obtainProgressMax;
-    public float requiredSpawnItemAmount;
+    public float spawnItemAmount;
     public string objectName;
 }

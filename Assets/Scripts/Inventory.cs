@@ -8,6 +8,7 @@ public class Inventory
     public event EventHandler OnItemListChanged;
 
     private List<Item> itemList;
+    
     private Action<Item> UseItemAction;
 
     public Inventory(Action<Item> useItemAction)

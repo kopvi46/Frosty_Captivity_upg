@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1012475246218568479, guid: 1572353271102484e98fcd6a5ebaa90c, type: 3}
   itemSO: {fileID: 11400000, guid: a9e454caff7d4f54a9c8b0b36e7dcfc8, type: 2}
-  obtainProgressMax: 3
-  requiredSpawnItemAmount: 2
+  obtainProgressMax: 5
+  spawnItemAmount: 2
   objectName: Pine
