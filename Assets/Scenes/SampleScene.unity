@@ -309,6 +309,7 @@ MonoBehaviour:
   interactableLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  playerLeftHandPoint: {fileID: 1196014377}
   inventoryUI: {fileID: 228908956}
   craftWindowUI: {fileID: 447179746}
 --- !u!65 &77019078

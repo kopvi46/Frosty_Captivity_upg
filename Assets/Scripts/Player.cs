@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IHasHealth
 
     public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
     public event EventHandler<OnSelectedObjectChangedEventArgs> OnSelectedObjectChanged;
+
     public class OnSelectedObjectChangedEventArgs : EventArgs
     {
         public IInteractable selectedObject;
@@ -18,16 +19,18 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask interactableLayerMask;
-    //[SerializeField] private Transform playerLeftHandPoint;
+    [SerializeField] private Transform playerLeftHandPoint;
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private CraftWindowUI craftWindowUI;
 
     private int playerHealth = 100;
     private float playerHealthChangeDelay = 3f;
     private float playerHealtChangeTimer = 0f;
+    private float torchBurningTimer = 0f;
+    private float torchBurningTime = 10;
     private Vector3 lastInteractDirection;
     private IInteractable selectedObject;
-    //private Item playerLeftHandHold;
+    private Item playerLeftHandHold;
     private Inventory inventory;
 
     public int PlayerHealth 
@@ -98,17 +101,17 @@ public class Player : MonoBehaviour, IHasHealth
                         }
                         break;
                 }
-                //if (item.GetItemAmount() > 1)
-                //{
-                //    item.SetItemAmount(item.GetItemAmount() - 1);
-                //} else
-                //{
-                //    inventory.RemoveItem(item);
-                //}
             } else
             {
                 Debug.Log("Fireplace if already big enough, it`s dangerous to make it bigger!");
             }
+        } else if (item.GetItemSO().itemType == ItemSO.ItemType.Torch)
+        {
+            playerLeftHandHold = item;
+            inventory.RemoveItem(item);
+
+            Transform itemTransform = Instantiate(item.GetItemSO().prefab, playerLeftHandPoint);
+            itemTransform.localRotation = Quaternion.Euler(-90, 0, 0);
         } else
         {
             Debug.Log("You need to be near fireplace, to use this item!");
@@ -147,10 +150,29 @@ public class Player : MonoBehaviour, IHasHealth
             }
         } else
         {
-            if (playerHealtChangeTimer < 0)
+            if (playerLeftHandHold != null && playerLeftHandHold.GetItemSO().itemType == ItemSO.ItemType.Torch)
             {
-                playerHealtChangeTimer = playerHealthChangeDelay;
-                PlayerHealth -= 10;
+                torchBurningTimer += Time.deltaTime;
+                if (torchBurningTimer > torchBurningTime)
+                {
+                    foreach (Transform child in  playerLeftHandPoint)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    playerLeftHandHold = null;
+                }
+                if (playerHealtChangeTimer < 0)
+                {
+                    playerHealtChangeTimer = playerHealthChangeDelay;
+                    Debug.Log("Player is under protection of torch");
+                }
+            } else
+            {
+                if (playerHealtChangeTimer < 0)
+                {
+                    playerHealtChangeTimer = playerHealthChangeDelay;
+                    PlayerHealth -= 10;
+                }
             }
         }
     }

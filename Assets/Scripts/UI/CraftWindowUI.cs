@@ -21,9 +21,12 @@ public class CraftWindowUI : MonoBehaviour
         recipeSlotContainer = transform.Find(ITEM_SLOT_CONTAINER);
         recipeSlotTemplate = recipeSlotContainer.Find(ITEM_SLOT_TEMPLATE);
     }
+
     public void SetInventory(Inventory inventory)
     {
         this.inventory = inventory;
+
+        inventory.AddItemToInventory(craftRecipeSOList[0].craftedItem);
 
         inventory.OnItemListChanged += Inventory_OnItemListChanged;
 
