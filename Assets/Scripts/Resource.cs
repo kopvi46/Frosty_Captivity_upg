@@ -11,7 +11,7 @@ public class Resource : MonoBehaviour, IInteractable
 
     public void Interact(Player player, Inventory inventory)
     {
-        Debug.Log($"Player interacted with {resourceSO.name} !");
+        //Debug.Log($"Player interacted with {resourceSO.name} !");
         
         interactionCount++;
 
@@ -19,7 +19,7 @@ public class Resource : MonoBehaviour, IInteractable
         {
             Destroy(gameObject);
 
-            for (int i = 0; i < resourceSO.requiredSpawnItemAmount; i++)
+            for (int i = 0; i < resourceSO.spawnItemAmount; i++)
             {
                 SpawnItem();
             }
@@ -41,7 +41,7 @@ public class Resource : MonoBehaviour, IInteractable
 
         Transform itemTransform = Instantiate(resourceSO.itemSO.prefab, spawnPosition, spawnRotation);
 
-        Item newItem = itemTransform.GetComponent<Item>();
+        //Item newItem = itemTransform.GetComponent<Item>();
         //newItem.SetItemAmountVisual();
     }
 }
