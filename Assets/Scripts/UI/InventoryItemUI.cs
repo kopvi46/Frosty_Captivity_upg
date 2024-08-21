@@ -8,6 +8,7 @@ public class InventoryItemUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private Canvas canvas;
 
+    [HideInInspector] public ItemSO itemSO;
     [HideInInspector] public Transform parentAfterDrag;
 
     private RectTransform rectTransform;
@@ -47,5 +48,11 @@ public class InventoryItemUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         image.raycastTarget = true;
         transform.SetParent(parentAfterDrag);
+    }
+
+    public void InitializeItem(ItemSO itemSO)
+    {
+        this.itemSO = itemSO;
+        image.sprite = itemSO.sprite;
     }
 }

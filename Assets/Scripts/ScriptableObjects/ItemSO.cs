@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class ResourseSO : ScriptableObject
+public class ItemSO : ScriptableObject
 {
     public enum ItemType
     {

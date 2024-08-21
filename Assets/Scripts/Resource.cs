@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ResourseSO resourceSO;
+    [SerializeField] private ItemSO resourceSO;
 
     public void Interact(Player player)
     {

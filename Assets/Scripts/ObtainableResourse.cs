@@ -37,6 +37,6 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
         float randomRotation = Random.Range(0f, 360f);
         Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
 
-        Transform itemTransform = Instantiate(ObtainableResourseSO.resourceSO.prefab, spawnPosition, spawnRotation);
+        Transform itemTransform = Instantiate(ObtainableResourseSO.itemSO.prefab, spawnPosition, spawnRotation);
     }
 }
