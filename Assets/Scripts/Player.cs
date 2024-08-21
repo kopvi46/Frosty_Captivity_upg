@@ -19,6 +19,7 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask interactableLayerMask;
+    [SerializeField] private LayerMask defaultLayerMask;
     [SerializeField] private Transform playerLeftHandPoint;
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private CraftWindowUI craftWindowUI;
@@ -112,6 +113,7 @@ public class Player : MonoBehaviour, IHasHealth
 
             Transform itemTransform = Instantiate(item.GetItemSO().prefab, playerLeftHandPoint);
             itemTransform.localRotation = Quaternion.Euler(-90, 0, 0);
+            itemTransform.gameObject.layer = defaultLayerMask;
         } else
         {
             Debug.Log("You need to be near fireplace, to use this item!");

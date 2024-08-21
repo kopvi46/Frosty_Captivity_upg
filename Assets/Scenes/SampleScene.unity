@@ -309,6 +309,9 @@ MonoBehaviour:
   interactableLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  defaultLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   playerLeftHandPoint: {fileID: 1196014377}
   inventoryUI: {fileID: 228908956}
   craftWindowUI: {fileID: 447179746}
