@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781ebec1245351b408598e1b09367f56, type: 3}
+  m_Name: Bush
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7672180627156140996, guid: f343d9ac354eb4c4eb1bdf357ec2dd51, type: 3}
+  resourceSO: {fileID: 11400000, guid: 352c0f23667ed1e448ffdfb2e7f9c32e, type: 2}
+  obtainProgressMax: 2
+  spawnItemAmount: 2
+  objectName: Bush

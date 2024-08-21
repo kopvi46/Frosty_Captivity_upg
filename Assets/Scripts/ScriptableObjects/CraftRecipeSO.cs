@@ -8,13 +8,13 @@ public class CraftRecipeSO : ScriptableObject
 {
     public string recipeName;
     public List<Ingredient> ingredientsList;
-    public ItemSO craftedItemSO;
-    public Item craftedItem;
+    //public ResourseSO craftedItemSO;
+    //public Resource craftedItem;
 
     [System.Serializable] public struct Ingredient
     {
-        public ItemSO requiredItemSO;
-        public Item requiredItem;
+        public ResourseSO requiredIResourceSO;
+        public Resource requiredResource;
         public int requiredAmount;
     }
 }

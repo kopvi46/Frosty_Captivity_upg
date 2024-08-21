@@ -21,18 +21,15 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private LayerMask interactableLayerMask;
     [SerializeField] private LayerMask defaultLayerMask;
     [SerializeField] private Transform playerLeftHandPoint;
-    [SerializeField] private InventoryUI inventoryUI;
-    [SerializeField] private CraftWindowUI craftWindowUI;
 
     private int playerHealth = 100;
     private float playerHealthChangeDelay = 3f;
     private float playerHealtChangeTimer = 0f;
-    private float torchBurningTimer = 0f;
-    private float torchBurningTime = 10;
+    //private float torchBurningTimer = 0f;
+    //private float torchBurningTime = 10;
     private Vector3 lastInteractDirection;
     private IInteractable selectedObject;
-    private Item playerLeftHandHold;
-    private Inventory inventory;
+    private Resource playerLeftHandHold;
 
     public int PlayerHealth 
     {  
@@ -66,64 +63,10 @@ public class Player : MonoBehaviour, IHasHealth
     private void Awake()
     {
         Instance = this;
-
-        inventory = new Inventory(UseItem);
-    }
-
-    private void UseItem(Item item)
-    {
-        if (FireplaceHeatZone.Instance.IsPlayerTriggered())
-        {
-            if (Fireplace.Instance.FireplaceHealth < Fireplace.Instance.FireplaceMaxHealth)
-            {
-                int fireplaceHealAmount;
-                switch (item.GetItemSO().itemType)
-                {
-                    case ItemSO.ItemType.ChoppedWood:
-                        fireplaceHealAmount = 5;
-                        Fireplace.Instance.FireplaceHealth += fireplaceHealAmount;
-                        if (item.GetItemAmount() > 1)
-                        {
-                            item.SetItemAmount(item.GetItemAmount() - 1);
-                        } else
-                        {
-                            inventory.RemoveItem(item);
-                        }
-                        break;
-                    case ItemSO.ItemType.Branch:
-                        fireplaceHealAmount = 3;
-                        Fireplace.Instance.FireplaceHealth += fireplaceHealAmount;
-                        if (item.GetItemAmount() > 1)
-                        {
-                            item.SetItemAmount(item.GetItemAmount() - 1);
-                        } else
-                        {
-                            inventory.RemoveItem(item);
-                        }
-                        break;
-                }
-            } else
-            {
-                Debug.Log("Fireplace if already big enough, it`s dangerous to make it bigger!");
-            }
-        } else if (item.GetItemSO().itemType == ItemSO.ItemType.Torch)
-        {
-            playerLeftHandHold = item;
-            inventory.RemoveItem(item);
-
-            Transform itemTransform = Instantiate(item.GetItemSO().prefab, playerLeftHandPoint);
-            itemTransform.localRotation = Quaternion.Euler(-90, 0, 0);
-            itemTransform.gameObject.layer = defaultLayerMask;
-        } else
-        {
-            Debug.Log("You need to be near fireplace, to use this item!");
-        }
     }
 
     private void Start()
     {
-        inventoryUI.SetInventory(inventory);
-        craftWindowUI.SetInventory(inventory);
 
         gameInput.OnInteractAction += GameInput_OnInteractAction;
     }
@@ -132,7 +75,7 @@ public class Player : MonoBehaviour, IHasHealth
     {
         if (selectedObject != null)
         {
-            selectedObject.Interact(this, inventory);
+            selectedObject.Interact(this);
         }
     }
 
@@ -152,30 +95,30 @@ public class Player : MonoBehaviour, IHasHealth
             }
         } else
         {
-            if (playerLeftHandHold != null && playerLeftHandHold.GetItemSO().itemType == ItemSO.ItemType.Torch)
-            {
-                torchBurningTimer += Time.deltaTime;
-                if (torchBurningTimer > torchBurningTime)
-                {
-                    foreach (Transform child in  playerLeftHandPoint)
-                    {
-                        Destroy(child.gameObject);
-                    }
-                    playerLeftHandHold = null;
-                }
-                if (playerHealtChangeTimer < 0)
-                {
-                    playerHealtChangeTimer = playerHealthChangeDelay;
-                    Debug.Log("Player is under protection of torch");
-                }
-            } else
-            {
+            //if (playerLeftHandHold != null && playerLeftHandHold.GetItemSO().itemType == ItemSO.ItemType.Torch)
+            //{
+            //    torchBurningTimer += Time.deltaTime;
+            //    if (torchBurningTimer > torchBurningTime)
+            //    {
+            //        foreach (Transform child in  playerLeftHandPoint)
+            //        {
+            //            Destroy(child.gameObject);
+            //        }
+            //        playerLeftHandHold = null;
+            //    }
+            //    if (playerHealtChangeTimer < 0)
+            //    {
+            //        playerHealtChangeTimer = playerHealthChangeDelay;
+            //        Debug.Log("Player is under protection of torch");
+            //    }
+            //} else
+            //{
                 if (playerHealtChangeTimer < 0)
                 {
                     playerHealtChangeTimer = playerHealthChangeDelay;
                     PlayerHealth -= 10;
                 }
-            }
+            //}
         }
     }
 

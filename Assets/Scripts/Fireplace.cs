@@ -57,7 +57,7 @@ public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
         }
     }
 
-    public void Interact(Player player, Inventory inventory)
+    public void Interact(Player player)
     {
         
     }
