@@ -11,9 +11,11 @@ public class InventoryUI : MonoBehaviour
     private Inventory inventory;
     private Transform itemSlotContainer;
     private Transform itemSlotTemplate;
+    private Transform itemVisualTemplate;
 
     private const string ITEM_SLOT_CONTAINER = "ItemSlotContainer";
     private const string ITEM_SLOT_TEMPLATE = "ItemSlotTemplate";
+    private const string ITEM_VISUAL_TEMPLATE = "ItemVisualTemplate";
     private const string IMAGE = "Image";
     private const string ITEM_AMOUNT = "ItemAmount";
 
@@ -21,6 +23,7 @@ public class InventoryUI : MonoBehaviour
     {
         itemSlotContainer = transform.Find(ITEM_SLOT_CONTAINER);
         itemSlotTemplate = itemSlotContainer.Find(ITEM_SLOT_TEMPLATE);
+        itemVisualTemplate = itemSlotTemplate.Find(ITEM_VISUAL_TEMPLATE);
     }
     public void SetInventory(Inventory inventory)
     {
@@ -38,57 +41,55 @@ public class InventoryUI : MonoBehaviour
 
     private void RefreshInventoryItems()
     {
+        int i = 0;
         foreach (Transform child in itemSlotContainer)
         {
-            if (child == itemSlotTemplate) continue;
-            Destroy(child.gameObject);
-        }
 
-        foreach (Item item in inventory.GetItemList())
-        {
-            RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
-            itemSlotRectTransform.gameObject.SetActive(true);
+            Transform grandChild = child.Find(ITEM_VISUAL_TEMPLATE);
 
-            InventoryClickHandler clickHandler = itemSlotRectTransform.GetComponent<InventoryClickHandler>();
-
-            if (clickHandler != null)
+            if (i < inventory.GetItemList().Count)
             {
-                clickHandler = itemSlotRectTransform.gameObject.AddComponent<InventoryClickHandler>();
-            }
+                Item item = inventory.GetItemList()[i];
+                Image image = grandChild.Find(IMAGE).GetComponent<Image>();
+                TextMeshProUGUI itemAmount = grandChild.Find(ITEM_AMOUNT).GetComponent<TextMeshProUGUI>();
 
-            clickHandler.OnLeftClick += (sender, e) =>
-            {
-                inventory.UseItem(item);
-                RefreshInventoryItems();
-            };
-
-            clickHandler.OnRightClick += (sender, e) =>
-            {
-                if (item.GetItemAmount() > 1)
-                {
-                    item.SetItemAmount(item.GetItemAmount() - 1);
-
-                    Item.DropItem(item);
-
-                    RefreshInventoryItems();
-                } else
-                {
-                    inventory.RemoveItem(item);
-                    Item.DropItem(item);
-                }
-            };
-
-            Image image = itemSlotRectTransform.Find(IMAGE).GetComponent<Image>();
-            image.sprite = item.GetItemSO().sprite;
-
-            TextMeshProUGUI itemAmount = itemSlotRectTransform.Find(ITEM_AMOUNT).GetComponent<TextMeshProUGUI>();
-            if (item.GetItemAmount() > 1)
-            {
-                itemAmount.SetText(item.GetItemAmount().ToString());
+                grandChild.gameObject.SetActive(true);
+                image.sprite = item.GetItemSO().sprite;
+                itemAmount.SetText(item.GetItemAmount() > 1 ? item.GetItemAmount().ToString() : "");
             } else
             {
-                itemAmount.SetText("");
+                grandChild.gameObject.SetActive(false);
             }
+            i++;
+
+            //InventoryClickHandler clickHandler = itemVisualRectTransform.GetComponent<InventoryClickHandler>();
+
+            //if (clickHandler != null)
+            //{
+            //    clickHandler = itemVisualRectTransform.gameObject.AddComponent<InventoryClickHandler>();
+            //}
+
+            //clickHandler.OnLeftClick += (sender, e) =>
+            //{
+            //    inventory.UseItem(item);
+            //    RefreshInventoryItems();
+            //};
+
+            //clickHandler.OnRightClick += (sender, e) =>
+            //{
+            //    if (item.GetItemAmount() > 1)
+            //    {
+            //        item.SetItemAmount(item.GetItemAmount() - 1);
+
+            //        Item.DropItem(item);
+
+            //        RefreshInventoryItems();
+            //    } else
+            //    {
+            //        inventory.RemoveItem(item);
+            //        Item.DropItem(item);
+            //    }
+            //
         }
     }
 }

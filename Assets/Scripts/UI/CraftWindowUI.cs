@@ -26,7 +26,7 @@ public class CraftWindowUI : MonoBehaviour
     {
         this.inventory = inventory;
 
-        inventory.AddItemToInventory(craftRecipeSOList[0].craftedItem);
+        //inventory.AddItemToInventory(craftRecipeSOList[0].craftedItem);
 
         inventory.OnItemListChanged += Inventory_OnItemListChanged;
 
