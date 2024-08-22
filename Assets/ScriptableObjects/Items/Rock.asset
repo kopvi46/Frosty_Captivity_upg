@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
-  m_Name: ChoppedWood
+  m_Name: Rock
   m_EditorClassIdentifier: 
-  ObjectName: Chopped Wood
-  itemType: 1
+  itemType: 0
   isStackable: 1
-  prefab: {fileID: 2509976594343172082, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
-  sprite: {fileID: 21300000, guid: 87ea61440e43b6c4a8545442d85a5100, type: 3}
+  maxStackAmount: 3
+  prefab: {fileID: 5692587424893557452, guid: 2f70e0087ab145740a56c1939241922c, type: 3}
+  sprite: {fileID: 21300000, guid: 8087b9240595c1a49a3593d8f50f64a6, type: 3}

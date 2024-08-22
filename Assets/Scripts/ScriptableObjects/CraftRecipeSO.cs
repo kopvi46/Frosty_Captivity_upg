@@ -14,7 +14,7 @@ public class CraftRecipeSO : ScriptableObject
     [System.Serializable] public struct Ingredient
     {
         public ItemSO requiredIResourceSO;
-        public Resource requiredResource;
+        public Item requiredResource;
         public int requiredAmount;
     }
 }

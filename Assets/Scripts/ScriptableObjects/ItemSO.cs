@@ -14,6 +14,7 @@ public class ItemSO : ScriptableObject
 
     public ItemType itemType;
     public bool isStackable;
+    public int maxStackAmount;
     public Transform prefab;
     public Sprite sprite;
 }

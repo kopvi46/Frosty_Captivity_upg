@@ -29,7 +29,7 @@ public class Player : MonoBehaviour, IHasHealth
     //private float torchBurningTime = 10;
     private Vector3 lastInteractDirection;
     private IInteractable selectedObject;
-    private Resource playerLeftHandHold;
+    private Item playerLeftHandHold;
 
     public int PlayerHealth 
     {  
@@ -67,7 +67,6 @@ public class Player : MonoBehaviour, IHasHealth
 
     private void Start()
     {
-
         gameInput.OnInteractAction += GameInput_OnInteractAction;
     }
 

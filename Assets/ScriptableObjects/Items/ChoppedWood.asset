@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
-  m_Name: Branch
+  m_Name: ChoppedWood
   m_EditorClassIdentifier: 
-  ObjectName: Branch
-  itemType: 2
+  itemType: 1
   isStackable: 1
-  prefab: {fileID: 5833294443859437630, guid: 86fdbefd66676c1468cc7fc649dda260, type: 3}
-  sprite: {fileID: 21300000, guid: 9d97f454fa583fb46ae5507b9d149166, type: 3}
+  maxStackAmount: 3
+  prefab: {fileID: 2509976594343172082, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
+  sprite: {fileID: 21300000, guid: 87ea61440e43b6c4a8545442d85a5100, type: 3}
