@@ -50,7 +50,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         _canvasGroup.blocksRaycasts = true;
 
         image.raycastTarget = true;
-        //transform.SetParent(parentAfterDrag);
 
         RectTransform inventoryRect = parentAfterDrag.parent.GetComponent<RectTransform>();
         if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, Input.mousePosition))
