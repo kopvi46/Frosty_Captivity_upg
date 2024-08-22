@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   isStackable: 1
-  maxStackAmount: 3
+  maxStackAmount: 5
   prefab: {fileID: 5692587424893557452, guid: 2f70e0087ab145740a56c1939241922c, type: 3}
   sprite: {fileID: 21300000, guid: 8087b9240595c1a49a3593d8f50f64a6, type: 3}

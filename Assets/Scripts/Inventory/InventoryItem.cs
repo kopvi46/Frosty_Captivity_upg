@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     private RectTransform _rectTransform;
     private CanvasGroup _canvasGroup;
@@ -49,13 +50,35 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         _canvasGroup.blocksRaycasts = true;
 
         image.raycastTarget = true;
-        transform.SetParent(parentAfterDrag);
+        //transform.SetParent(parentAfterDrag);
+
+        RectTransform inventoryRect = parentAfterDrag.parent.GetComponent<RectTransform>();
+        if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, Input.mousePosition))
+        {
+            InventoryManager.Instance.DropInventoryItem(ItemSO, amount);
+            Destroy(gameObject);
+        } else
+        {
+            transform.SetParent(parentAfterDrag);
+        }
     }
 
-    public void InitializeItem(ItemSO itemSO)
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+
+        } else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            InventoryManager.Instance.SplitInventoryItem(this);
+        }
+    }
+
+    public void InitializeItem(ItemSO itemSO, int amount = 1)
     {
         ItemSO = itemSO;
         image.sprite = itemSO.sprite;
+        this.amount = amount;
         RefreshAmount();
     }
 

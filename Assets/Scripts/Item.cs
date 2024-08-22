@@ -9,9 +9,11 @@ public class Item : MonoBehaviour, IInteractable
 {
     [SerializeField] private ItemSO itemSO;
 
+    [HideInInspector] public int amount = 1;
+
     public void Interact(Player player)
     {
-        bool itemAddedSuccessfull = InventoryManager.Instance.AddItem(itemSO);
+        bool itemAddedSuccessfull = InventoryManager.Instance.AddInventoryItem(itemSO, this, amount);
 
         if (itemAddedSuccessfull)
         {
