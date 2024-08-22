@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
+    public event EventHandler OnInventoryChanged;
     public static InventoryManager Instance {  get; private set; }
 
     [SerializeField] private InventorySlot[] inventorySlotArray;
@@ -13,11 +15,6 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
-        
     }
 
     public bool AddInventoryItem(ItemSO itemSO, Item item, int amount = 1)
@@ -32,7 +29,9 @@ public class InventoryManager : MonoBehaviour
                 if (itemInSlot != null && itemInSlot.ItemSO == itemSO && itemInSlot.amount < itemInSlot.ItemSO.maxStackAmount)
                 {
                     itemInSlot.amount += amount;
-                    itemInSlot.RefreshAmount(); 
+                    itemInSlot.RefreshAmount();
+
+                    OnInventoryChanged?.Invoke(this, EventArgs.Empty);
                     return true;
                 }
             }
@@ -45,6 +44,8 @@ public class InventoryManager : MonoBehaviour
             if (itemInSlot == null)
             {
                 SpawnNewInventoryItem(itemSO, inventorySlot, item.amount);
+
+                OnInventoryChanged?.Invoke(this, EventArgs.Empty);
                 return true;
             }
         }
@@ -81,16 +82,22 @@ public class InventoryManager : MonoBehaviour
     {
         float spawnRadius = 2f;
 
-        //Vector3 randomOffset = Vector3.Cross(Player.Instance.transform.position, Vector3.up).normalized * Random.Range(-spawnRadius, spawnRadius);
-        Vector3 randomOffset = new Vector3(Random.Range(-spawnRadius, spawnRadius), 0, Random.Range(-spawnRadius, spawnRadius));
+        Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-spawnRadius, spawnRadius), 0, UnityEngine.Random.Range(-spawnRadius, spawnRadius));
 
         Vector3 spawnPosition = Player.Instance.transform.position + randomOffset;
 
-        float randomRotation = Random.Range(0f, 360f);
+        float randomRotation = UnityEngine.Random.Range(0f, 360f);
         Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
 
         Transform itemTransform = Instantiate(itemSO.prefab, spawnPosition, spawnRotation);
         Item newItem = itemTransform.GetComponent<Item>();
         newItem.amount = amount;
+        
+        OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public InventorySlot[] GetInventorySlotArray()
+    {
+        return inventorySlotArray;
     }
 }
