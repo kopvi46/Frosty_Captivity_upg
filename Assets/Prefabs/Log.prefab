@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 412895473572313567}
   - component: {fileID: 5305572729052619253}
   m_Layer: 6
-  m_Name: ChoppedWood
+  m_Name: Log
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

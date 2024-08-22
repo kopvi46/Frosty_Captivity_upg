@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Scriptable Objects/Obtain Resource")]
 public class ObtainableResourseSO : ScriptableObject
 {
     public Transform prefab;
