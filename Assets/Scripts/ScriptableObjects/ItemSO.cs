@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Scriptable Objects/Item")]
 public class ItemSO : ScriptableObject
 {
     public enum ItemType
     {
-        Torch,
+        Rock,
         ChoppedWood,
         Branch,
+        Torch,
+    }
+    public enum HandType
+    {
+        LeftHand,
+        RightHand,
+        None,
     }
 
-    public string ObjectName;
     public ItemType itemType;
+    public HandType handType;
     public bool isStackable;
+    public int maxStackAmount;
     public Transform prefab;
     public Sprite sprite;
 }

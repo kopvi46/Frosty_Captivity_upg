@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Scriptable Objects/Craft Recipe")]
 public class CraftRecipeSO : ScriptableObject
 {
-    public string recipeName;
     public List<Ingredient> ingredientsList;
     public ItemSO craftedItemSO;
     public Item craftedItem;

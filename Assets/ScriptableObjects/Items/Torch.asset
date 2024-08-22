@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
   m_Name: Torch
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 3
+  isStackable: 0
+  maxStackAmount: 0
   prefab: {fileID: 5501835884631495091, guid: 44aba25c88483af49a2c267f29cd9566, type: 3}
-  sprite: {fileID: 21300000, guid: 450327288cece8b4c91fee558bad2a63, type: 3}
-  ObjectName: Torch
+  sprite: {fileID: 21300000, guid: 4e181472431191049967b05a461c2dd9, type: 3}

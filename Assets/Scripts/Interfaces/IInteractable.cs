@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    public void Interact(Player player, Inventory inventory); 
+    public void Interact(Player player); 
 }
