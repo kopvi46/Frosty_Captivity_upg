@@ -220,4 +220,9 @@ public class Player : MonoBehaviour, IHasHealth
             selectedObject = selectedObject
         });
     }
+
+    public Vector3 GetLastInteractDirection()
+    {
+        return _lastInteractDirection;
+    }
 }

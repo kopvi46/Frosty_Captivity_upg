@@ -359,15 +359,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610255e8eb25f6544a52574ec550f925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0
-  _gameInput: {fileID: 0}
+  _moveSpeed: 7
+  _gameInput: {fileID: 1301928153}
   _interactableLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _defaultLayerMask:
     serializedVersion: 2
-    m_Bits: 0
-  _playerLeftHandPoint: {fileID: 0}
+    m_Bits: 1
+  _playerLeftHandPoint: {fileID: 1196014377}
 --- !u!65 &77019078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1496,7 +1496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad565339b2cdf9e42afde6b851290bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySlotArray:
+  _inventorySlotArray:
   - {fileID: 788962181574895891}
   - {fileID: 1281271959}
   - {fileID: 303039659}
@@ -1505,7 +1505,7 @@ MonoBehaviour:
   - {fileID: 1810284226}
   - {fileID: 654421167}
   - {fileID: 1925827381}
-  inventoryItemPrefab: {fileID: 2135207480894768848, guid: fb9b76e3e1d5a72499aa86ef35183b7a,
+  _inventoryItemPrefab: {fileID: 2135207480894768848, guid: fb9b76e3e1d5a72499aa86ef35183b7a,
     type: 3}
 --- !u!4 &617643685
 Transform:
@@ -2517,8 +2517,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec82efbaacd2b6499888cc49ea81761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasHealthGameObject: {fileID: 1015078611}
-  barImage: {fileID: 1131592946}
+  _hasHealthGameObject: {fileID: 1015078611}
+  _barImage: {fileID: 1131592946}
 --- !u!1 &1092204835
 GameObject:
   m_ObjectHideFlags: 0
@@ -2564,8 +2564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b9ce9bc8ea7d0418ac74edf0276a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactableGameObject: {fileID: 1015078611}
-  visualGameObjectArray:
+  _interactableGameObject: {fileID: 1015078611}
+  _visualGameObjectArray:
   - {fileID: 1233511128}
 --- !u!1 &1122762667
 GameObject:
@@ -4634,8 +4634,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec82efbaacd2b6499888cc49ea81761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasHealthGameObject: {fileID: 77019075}
-  barImage: {fileID: 1122762669}
+  _hasHealthGameObject: {fileID: 77019075}
+  _barImage: {fileID: 1122762669}
 --- !u!1001 &1990295943
 PrefabInstance:
   m_ObjectHideFlags: 0

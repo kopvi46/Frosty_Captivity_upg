@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5dfb3a5420b3446ba0cb66093f624e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObtainableResourseSO: {fileID: 11400000, guid: 55fdc6ff2ba487446bd79d3ba65ed4df,
+  _ObtainableResourseSO: {fileID: 11400000, guid: 55fdc6ff2ba487446bd79d3ba65ed4df,
     type: 2}
 --- !u!1 &5651185716662004891
 GameObject:
@@ -568,8 +568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b9ce9bc8ea7d0418ac74edf0276a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactableGameObject: {fileID: 4980295356450084455}
-  visualGameObjectArray:
+  _interactableGameObject: {fileID: 4980295356450084455}
+  _visualGameObjectArray:
   - {fileID: 275816263442244391}
   - {fileID: 7534054768060279295}
   - {fileID: 2221614384485738649}

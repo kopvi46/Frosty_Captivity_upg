@@ -5,33 +5,33 @@ using UnityEngine;
 
 public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
 {
-    public static Fireplace Instance;
-
+    public static Fireplace Instance { get; private set; }
+    
     public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
 
-    private int fireplaceHealth = 60;
-    private float fireplaceHealtChangeDelay = 3f;
-    private float fireplaceHealtChangeTimer = 0f;
+    private int _fireplaceHealth = 60;
+    private float _fireplaceHealtChangeDelay = 3f;
+    private float _fireplaceHealtChangeTimer = 0f;
 
     public int FireplaceMaxHealth { get; private set; } = 100;
     public int FireplaceHealth
     {
         get
         {
-            return fireplaceHealth;
+            return _fireplaceHealth;
         }
         set
         {
             int fireplaceMinHealth = 0;
             if (value < fireplaceMinHealth)
             {
-                fireplaceHealth = fireplaceMinHealth;
+                _fireplaceHealth = fireplaceMinHealth;
             } else if (value > FireplaceMaxHealth)
             {
-                fireplaceHealth = FireplaceMaxHealth;
+                _fireplaceHealth = FireplaceMaxHealth;
             } else
             {
-                fireplaceHealth = value;
+                _fireplaceHealth = value;
             }
 
             OnHealthChanged?.Invoke(this, new IHasHealth.OnHealthChangedEventArgs
@@ -48,17 +48,17 @@ public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
 
     private void Update()
     {
-        fireplaceHealtChangeTimer -= Time.deltaTime;
+        _fireplaceHealtChangeTimer -= Time.deltaTime;
 
-        if (fireplaceHealtChangeTimer < 0 )
+        if (_fireplaceHealtChangeTimer < 0 )
         {
-            fireplaceHealtChangeTimer = fireplaceHealtChangeDelay;
+            _fireplaceHealtChangeTimer = _fireplaceHealtChangeDelay;
             FireplaceHealth -= 1;
         }
     }
 
     public void Interact(Player player)
     {
-        
+        //Not implemented yet
     }
 }

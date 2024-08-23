@@ -9,8 +9,8 @@ public class InventoryManager : MonoBehaviour
     public event EventHandler OnInventoryChanged;
     public static InventoryManager Instance {  get; private set; }
 
-    [SerializeField] private InventorySlot[] inventorySlotArray;
-    [SerializeField] private GameObject inventoryItemPrefab;
+    [SerializeField] private InventorySlot[] _inventorySlotArray;
+    [SerializeField] private GameObject _inventoryItemPrefab;
 
     private void Awake()
     {
@@ -22,9 +22,9 @@ public class InventoryManager : MonoBehaviour
         //Check if picked item is stackable and if there is any slot that can store one more same item and if so than place item in this slot
         if (itemSO.isStackable)
         {
-            for (int i = 0; i < inventorySlotArray.Length; i++)
+            for (int i = 0; i < _inventorySlotArray.Length; i++)
             {
-                InventorySlot inventorySlot = inventorySlotArray[i];
+                InventorySlot inventorySlot = _inventorySlotArray[i];
                 InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
 
                 if (itemInSlot != null && itemInSlot.ItemSO == itemSO && itemInSlot.amount < itemInSlot.ItemSO.maxStackAmount)
@@ -39,9 +39,9 @@ public class InventoryManager : MonoBehaviour
             }
         }
         //Find empty slot for placing picked item and place it there
-        for (int i = 0; i < inventorySlotArray.Length; i++)
+        for (int i = 0; i < _inventorySlotArray.Length; i++)
         {
-            InventorySlot inventorySlot = inventorySlotArray[i];
+            InventorySlot inventorySlot = _inventorySlotArray[i];
             InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
 
             if (itemInSlot == null)
@@ -58,7 +58,7 @@ public class InventoryManager : MonoBehaviour
 
     private void SpawnNewInventoryItem(ItemSO itemSO, InventorySlot inventorySlot, int amount)
     {
-        GameObject newItemGO = Instantiate(inventoryItemPrefab, inventorySlot.transform);
+        GameObject newItemGO = Instantiate(_inventoryItemPrefab, inventorySlot.transform);
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         inventoryItem.InitializeItem(itemSO, amount);
     }
@@ -71,9 +71,9 @@ public class InventoryManager : MonoBehaviour
         inventoryItem.RefreshAmount();
 
         //Looking for nearest empty slot and placing there half of split item amount
-        for (int i = 0; i < inventorySlotArray.Length; i++)
+        for (int i = 0; i < _inventorySlotArray.Length; i++)
         {
-            InventorySlot inventorySlot = inventorySlotArray[i];
+            InventorySlot inventorySlot = _inventorySlotArray[i];
             InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
 
             if (itemInSlot == null)
@@ -107,6 +107,6 @@ public class InventoryManager : MonoBehaviour
 
     public InventorySlot[] GetInventorySlotArray()
     {
-        return inventorySlotArray;
+        return _inventorySlotArray;
     }
 }

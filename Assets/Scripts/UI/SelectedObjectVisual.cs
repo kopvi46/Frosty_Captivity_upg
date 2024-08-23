@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class SelectedObjectVisual : MonoBehaviour
 {
-    //[SerializeField] private IInteractable interactable;
-    [SerializeField] private GameObject interactableGameObject;
-    [SerializeField] private GameObject[] visualGameObjectArray;
-
     private IInteractable interactable;
+
+    [SerializeField] private GameObject _interactableGameObject;
+    [SerializeField] private GameObject[] _visualGameObjectArray;
     private void Start()
     {
-        interactable = interactableGameObject.GetComponent<IInteractable>();
+        interactable = _interactableGameObject.GetComponent<IInteractable>();
         Player.Instance.OnSelectedObjectChanged += Player_OnSelectedObjectChanged;
     }
 
@@ -34,7 +33,7 @@ public class SelectedObjectVisual : MonoBehaviour
 
     private void Show()
     {
-        foreach (GameObject visualGameObject in visualGameObjectArray)
+        foreach (GameObject visualGameObject in _visualGameObjectArray)
         {
             visualGameObject.SetActive(true);
         }
@@ -42,7 +41,7 @@ public class SelectedObjectVisual : MonoBehaviour
 
     private void Hide()
     {
-        foreach (GameObject visualGameObject in visualGameObjectArray)
+        foreach (GameObject visualGameObject in _visualGameObjectArray)
         {
             visualGameObject.SetActive(false);
         }

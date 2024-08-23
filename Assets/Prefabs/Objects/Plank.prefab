@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33be3727e97a0f940b04d93445c873ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSO: {fileID: 11400000, guid: 0fe1f5592b110654b90f4416d0b77b39, type: 2}
+  _itemSO: {fileID: 11400000, guid: 0fe1f5592b110654b90f4416d0b77b39, type: 2}
   amount: 1
 --- !u!1 &3438496122354724732
 GameObject:
@@ -313,6 +313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b9ce9bc8ea7d0418ac74edf0276a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactableGameObject: {fileID: 1640041882972898424}
-  visualGameObjectArray:
+  _interactableGameObject: {fileID: 1640041882972898424}
+  _visualGameObjectArray:
   - {fileID: 1322261247082107336}
