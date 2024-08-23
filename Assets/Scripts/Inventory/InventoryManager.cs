@@ -19,33 +19,37 @@ public class InventoryManager : MonoBehaviour
 
     public bool AddInventoryItem(ItemSO itemSO, Item item, int amount = 1)
     {
-        //Check if picked item is stakable and is there any slot that can store one more same item
+        //Check if picked item is stackable and if there is any slot that can store one more same item and if so than place item in this slot
         if (itemSO.isStackable)
         {
             for (int i = 0; i < inventorySlotArray.Length; i++)
             {
                 InventorySlot inventorySlot = inventorySlotArray[i];
                 InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
+
                 if (itemInSlot != null && itemInSlot.ItemSO == itemSO && itemInSlot.amount < itemInSlot.ItemSO.maxStackAmount)
                 {
                     itemInSlot.amount += amount;
                     itemInSlot.RefreshAmount();
 
                     OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+
                     return true;
                 }
             }
         }
-        //Find empy slot for placing picked item
+        //Find empty slot for placing picked item and place it there
         for (int i = 0; i < inventorySlotArray.Length; i++)
         {
             InventorySlot inventorySlot = inventorySlotArray[i];
             InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
+
             if (itemInSlot == null)
             {
                 SpawnNewInventoryItem(itemSO, inventorySlot, item.amount);
 
                 OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+
                 return true;
             }
         }
@@ -66,10 +70,12 @@ public class InventoryManager : MonoBehaviour
 
         inventoryItem.RefreshAmount();
 
+        //Looking for nearest empty slot and placing there half of split item amount
         for (int i = 0; i < inventorySlotArray.Length; i++)
         {
             InventorySlot inventorySlot = inventorySlotArray[i];
             InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
+
             if (itemInSlot == null)
             {
                 SpawnNewInventoryItem(inventoryItem.ItemSO, inventorySlot, newInventoryItemAmount);
@@ -80,6 +86,7 @@ public class InventoryManager : MonoBehaviour
 
     public void DropInventoryItem(ItemSO itemSO, InventoryItem inventoryItem, int amount)
     {
+        //Spawn item in a world and delete from inventory
         float spawnRadius = 2f;
 
         Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-spawnRadius, spawnRadius), 0, UnityEngine.Random.Range(-spawnRadius, spawnRadius));
@@ -97,16 +104,6 @@ public class InventoryManager : MonoBehaviour
 
         OnInventoryChanged?.Invoke(this, EventArgs.Empty);
     }
-
-    //public void RemoveInventoryItem(InventoryItem inventoryItem)
-    //{
-    //    inventoryItem.amount -= 1;
-    //    if (inventoryItem.amount <= 0)
-    //    {
-    //        Destroy(inventoryItem.gameObject);
-    //    }
-    //    inventoryItem.RefreshAmount();
-    //}
 
     public InventorySlot[] GetInventorySlotArray()
     {

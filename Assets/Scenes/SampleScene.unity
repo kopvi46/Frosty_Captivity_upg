@@ -359,15 +359,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610255e8eb25f6544a52574ec550f925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  gameInput: {fileID: 1301928153}
-  interactableLayerMask:
+  _moveSpeed: 0
+  _gameInput: {fileID: 0}
+  _interactableLayerMask:
     serializedVersion: 2
-    m_Bits: 64
-  defaultLayerMask:
+    m_Bits: 0
+  _defaultLayerMask:
     serializedVersion: 2
-    m_Bits: 1
-  playerLeftHandPoint: {fileID: 1196014377}
+    m_Bits: 0
+  _playerLeftHandPoint: {fileID: 0}
 --- !u!65 &77019078
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -9,8 +9,7 @@ public class CraftManager : MonoBehaviour
 
     [SerializeField] private CraftRecipe[] _craftRecipeArray;
 
-    [System.Serializable]
-    public struct CraftRecipe
+    [System.Serializable] public struct CraftRecipe
     {
         public CraftRecipeSO craftRecipeSO;
         public CraftItemButton craftItemButton;
@@ -40,7 +39,6 @@ public class CraftManager : MonoBehaviour
             foreach (CraftRecipeSO.Ingredient ingredient in craftRecipe.craftRecipeSO.ingredientsList)
             {
                 int availableAmountOfRequiredIngredient = 0;
-                Debug.Log(availableAmountOfRequiredIngredient);
 
                 foreach (InventorySlot inventorySlot in InventoryManager.Instance.GetInventorySlotArray())
                 {
@@ -51,7 +49,6 @@ public class CraftManager : MonoBehaviour
                         availableAmountOfRequiredIngredient += inventoryItem.amount;
                     }
                 }
-                Debug.Log(availableAmountOfRequiredIngredient);
 
                 if (availableAmountOfRequiredIngredient < ingredient.requiredAmount)
                 {
