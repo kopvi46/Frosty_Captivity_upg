@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
-  m_Name: Rock
+  m_Name: Spear
   m_EditorClassIdentifier: 
-  itemType: 0
-  handType: 2
-  isStackable: 1
-  maxStackAmount: 5
-  prefab: {fileID: 5692587424893557452, guid: 2f70e0087ab145740a56c1939241922c, type: 3}
-  sprite: {fileID: 21300000, guid: 8087b9240595c1a49a3593d8f50f64a6, type: 3}
+  itemType: 5
+  handType: 1
+  item: {fileID: 5937282324088489062, guid: f3a875dbb7423d9408d515790f1b9275, type: 3}
+  isStackable: 0
+  maxStackAmount: 0
+  prefab: {fileID: 7278841125950491218, guid: f3a875dbb7423d9408d515790f1b9275, type: 3}
+  sprite: {fileID: 21300000, guid: dfbc3ae862c7aa046ae01ffa498fba63, type: 3}

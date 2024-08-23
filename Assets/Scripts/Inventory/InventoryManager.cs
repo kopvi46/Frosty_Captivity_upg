@@ -78,7 +78,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void DropInventoryItem(ItemSO itemSO, int amount)
+    public void DropInventoryItem(ItemSO itemSO, InventoryItem inventoryItem, int amount)
     {
         float spawnRadius = 2f;
 
@@ -92,9 +92,21 @@ public class InventoryManager : MonoBehaviour
         Transform itemTransform = Instantiate(itemSO.prefab, spawnPosition, spawnRotation);
         Item newItem = itemTransform.GetComponent<Item>();
         newItem.amount = amount;
-        
+
+        Destroy(inventoryItem.gameObject);
+
         OnInventoryChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    //public void RemoveInventoryItem(InventoryItem inventoryItem)
+    //{
+    //    inventoryItem.amount -= 1;
+    //    if (inventoryItem.amount <= 0)
+    //    {
+    //        Destroy(inventoryItem.gameObject);
+    //    }
+    //    inventoryItem.RefreshAmount();
+    //}
 
     public InventorySlot[] GetInventorySlotArray()
     {

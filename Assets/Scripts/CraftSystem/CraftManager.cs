@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static CraftManager;
 
 public class CraftManager : MonoBehaviour
 {
     public static CraftManager Instance { get; private set; }
 
-    [SerializeField] private CraftRecipe[] craftRecipeArray;
+    [SerializeField] private CraftRecipe[] _craftRecipeArray;
 
     [System.Serializable]
     public struct CraftRecipe
     {
         public CraftRecipeSO craftRecipeSO;
-        public CraftItem craftItemObject;
+        public CraftItemButton craftItemButton;
     }
 
     private void Awake()
@@ -32,48 +31,37 @@ public class CraftManager : MonoBehaviour
         CheckAvailableRecipe();
     }
 
-    private void CheckAvailableRecipe()
+    public void CheckAvailableRecipe()
     {
-        foreach (CraftRecipe craftRecipe in craftRecipeArray)
+        foreach (CraftRecipe craftRecipe in _craftRecipeArray)
         {
+            bool canCraftRecipe = true;
+
             foreach (CraftRecipeSO.Ingredient ingredient in craftRecipe.craftRecipeSO.ingredientsList)
             {
-                InventorySlot[] inventorySlotArray = InventoryManager.Instance.GetInventorySlotArray();
-                for (int i = 0; i < inventorySlotArray.Length; i++)
-                {
-                    if (ingredient.requiredItemSO.itemType == inventorySlotArray[i].GetComponentInChildren<InventoryItem>().ItemSO.itemType)
-                    {
+                int availableAmountOfRequiredIngredient = 0;
+                Debug.Log(availableAmountOfRequiredIngredient);
 
+                foreach (InventorySlot inventorySlot in InventoryManager.Instance.GetInventorySlotArray())
+                {
+                    InventoryItem inventoryItem = inventorySlot.GetComponentInChildren<InventoryItem>();
+
+                    if (inventoryItem != null && inventoryItem.ItemSO.itemType == ingredient.requiredItemSO.itemType)
+                    {
+                        availableAmountOfRequiredIngredient += inventoryItem.amount;
                     }
                 }
+                Debug.Log(availableAmountOfRequiredIngredient);
+
+                if (availableAmountOfRequiredIngredient < ingredient.requiredAmount)
+                {
+                    canCraftRecipe = false;
+                    break;
+                }
             }
+
+            craftRecipe.craftItemButton.canCraftRecipe = canCraftRecipe;
+            craftRecipe.craftItemButton.canvasGroup.alpha = canCraftRecipe ? 1f : .5f;
         }
-
-        //bool canCraftRecipe = true;
-
-        //foreach (CraftRecipeSO.Ingredient ingredient in craftRecipeSO.ingredientsList)
-        //{
-        //    bool ingredientFound = false;
-        //    foreach (Item item in inventory.GetItemList())
-        //    {
-        //        if (item.GetItemSO().itemType == ingredient.requiredItemSO.itemType && item.GetItemAmount() >= ingredient.requiredAmount)
-        //        {
-        //            ingredientFound = true;
-        //            break;
-        //        }
-        //    }
-
-        //    // якщо хоча б один ≥нгред≥Їнт не знайдено або в недостатн≥й к≥лькост≥
-        //    if (!ingredientFound)
-        //    {
-        //        canCraftRecipe = false;
-        //        break;
-        //    }
-        //}
-
-        //if (canCraftRecipe)
-        //{
-        //    // ¬иконати крафт
-        //}
     }
 }

@@ -7,10 +7,13 @@ public class ItemSO : ScriptableObject
 {
     public enum ItemType
     {
-        Rock,
-        ChoppedWood,
+        Stone,
+        Log,
         Branch,
+        Plank,
         Torch,
+        Spear,
+        Axe,
     }
     public enum HandType
     {
@@ -21,6 +24,7 @@ public class ItemSO : ScriptableObject
 
     public ItemType itemType;
     public HandType handType;
+    public Item item;
     public bool isStackable;
     public int maxStackAmount;
     public Transform prefab;

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
-  m_Name: Log
+  m_Name: Plank
   m_EditorClassIdentifier: 
-  itemType: 1
+  itemType: 3
   handType: 2
-  item: {fileID: 5305572729052619253, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
+  item: {fileID: 8763057626145385072, guid: 89cdf13931aa4e442b3405d46195c522, type: 3}
   isStackable: 1
   maxStackAmount: 5
-  prefab: {fileID: 2509976594343172082, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
-  sprite: {fileID: 21300000, guid: 87ea61440e43b6c4a8545442d85a5100, type: 3}
+  prefab: {fileID: 4463587163267741756, guid: 89cdf13931aa4e442b3405d46195c522, type: 3}
+  sprite: {fileID: 21300000, guid: 34eb9b4bda6201347b1b5539f5c075dc, type: 3}

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
-  m_Name: Log
+  m_Name: Axe
   m_EditorClassIdentifier: 
-  itemType: 1
-  handType: 2
-  item: {fileID: 5305572729052619253, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
-  isStackable: 1
-  maxStackAmount: 5
-  prefab: {fileID: 2509976594343172082, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
-  sprite: {fileID: 21300000, guid: 87ea61440e43b6c4a8545442d85a5100, type: 3}
+  itemType: 6
+  handType: 1
+  item: {fileID: 2902591332991953455, guid: c1e63b13af1e2bd43869466f13de9891, type: 3}
+  isStackable: 0
+  maxStackAmount: 0
+  prefab: {fileID: 8029118531404857458, guid: c1e63b13af1e2bd43869466f13de9891, type: 3}
+  sprite: {fileID: 21300000, guid: 73654b98950ef7a458d743aab2136a09, type: 3}

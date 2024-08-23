@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
   m_Name: Torch
   m_EditorClassIdentifier: 
-  itemType: 3
+  itemType: 4
+  handType: 0
+  item: {fileID: 6192941658554714445, guid: 44aba25c88483af49a2c267f29cd9566, type: 3}
   isStackable: 0
   maxStackAmount: 0
   prefab: {fileID: 5501835884631495091, guid: 44aba25c88483af49a2c267f29cd9566, type: 3}
