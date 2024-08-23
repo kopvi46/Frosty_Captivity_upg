@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 2
   handType: 2
+  item: {fileID: 896925213153045470, guid: 86fdbefd66676c1468cc7fc649dda260, type: 3}
   isStackable: 1
   maxStackAmount: 5
   prefab: {fileID: 5833294443859437630, guid: 86fdbefd66676c1468cc7fc649dda260, type: 3}

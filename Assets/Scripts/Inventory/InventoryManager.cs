@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,46 +6,50 @@ using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
+    public event EventHandler OnInventoryChanged;
     public static InventoryManager Instance {  get; private set; }
 
-    [SerializeField] private InventorySlot[] inventorySlotArray;
-    [SerializeField] private GameObject inventoryItemPrefab;
+    [SerializeField] private InventorySlot[] _inventorySlotArray;
+    [SerializeField] private GameObject _inventoryItemPrefab;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    private void Start()
-    {
-        
-    }
-
     public bool AddInventoryItem(ItemSO itemSO, Item item, int amount = 1)
     {
-        //Check if picked item is stakable and is there any slot that can store one more same item
+        //Check if picked item is stackable and if there is any slot that can store one more same item and if so than place item in this slot
         if (itemSO.isStackable)
         {
-            for (int i = 0; i < inventorySlotArray.Length; i++)
+            for (int i = 0; i < _inventorySlotArray.Length; i++)
             {
-                InventorySlot inventorySlot = inventorySlotArray[i];
+                InventorySlot inventorySlot = _inventorySlotArray[i];
                 InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
+
                 if (itemInSlot != null && itemInSlot.ItemSO == itemSO && itemInSlot.amount < itemInSlot.ItemSO.maxStackAmount)
                 {
                     itemInSlot.amount += amount;
-                    itemInSlot.RefreshAmount(); 
+                    itemInSlot.RefreshAmount();
+
+                    OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+
                     return true;
                 }
             }
         }
-        //Find empy slot for placing picked item
-        for (int i = 0; i < inventorySlotArray.Length; i++)
+        //Find empty slot for placing picked item and place it there
+        for (int i = 0; i < _inventorySlotArray.Length; i++)
         {
-            InventorySlot inventorySlot = inventorySlotArray[i];
+            InventorySlot inventorySlot = _inventorySlotArray[i];
             InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
+
             if (itemInSlot == null)
             {
                 SpawnNewInventoryItem(itemSO, inventorySlot, item.amount);
+
+                OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+
                 return true;
             }
         }
@@ -53,7 +58,7 @@ public class InventoryManager : MonoBehaviour
 
     private void SpawnNewInventoryItem(ItemSO itemSO, InventorySlot inventorySlot, int amount)
     {
-        GameObject newItemGO = Instantiate(inventoryItemPrefab, inventorySlot.transform);
+        GameObject newItemGO = Instantiate(_inventoryItemPrefab, inventorySlot.transform);
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         inventoryItem.InitializeItem(itemSO, amount);
     }
@@ -65,10 +70,12 @@ public class InventoryManager : MonoBehaviour
 
         inventoryItem.RefreshAmount();
 
-        for (int i = 0; i < inventorySlotArray.Length; i++)
+        //Looking for nearest empty slot and placing there half of split item amount
+        for (int i = 0; i < _inventorySlotArray.Length; i++)
         {
-            InventorySlot inventorySlot = inventorySlotArray[i];
+            InventorySlot inventorySlot = _inventorySlotArray[i];
             InventoryItem itemInSlot = inventorySlot.GetComponentInChildren<InventoryItem>();
+
             if (itemInSlot == null)
             {
                 SpawnNewInventoryItem(inventoryItem.ItemSO, inventorySlot, newInventoryItemAmount);
@@ -77,20 +84,29 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void DropInventoryItem(ItemSO itemSO, int amount)
+    public void DropInventoryItem(ItemSO itemSO, InventoryItem inventoryItem, int amount)
     {
+        //Spawn item in a world and delete from inventory
         float spawnRadius = 2f;
 
-        //Vector3 randomOffset = Vector3.Cross(Player.Instance.transform.position, Vector3.up).normalized * Random.Range(-spawnRadius, spawnRadius);
-        Vector3 randomOffset = new Vector3(Random.Range(-spawnRadius, spawnRadius), 0, Random.Range(-spawnRadius, spawnRadius));
+        Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-spawnRadius, spawnRadius), 0, UnityEngine.Random.Range(-spawnRadius, spawnRadius));
 
         Vector3 spawnPosition = Player.Instance.transform.position + randomOffset;
 
-        float randomRotation = Random.Range(0f, 360f);
+        float randomRotation = UnityEngine.Random.Range(0f, 360f);
         Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
 
         Transform itemTransform = Instantiate(itemSO.prefab, spawnPosition, spawnRotation);
         Item newItem = itemTransform.GetComponent<Item>();
         newItem.amount = amount;
+
+        Destroy(inventoryItem.gameObject);
+
+        OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public InventorySlot[] GetInventorySlotArray()
+    {
+        return _inventorySlotArray;
     }
 }

@@ -7,13 +7,13 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ItemSO itemSO;
+    [SerializeField] private ItemSO _itemSO;
 
     [HideInInspector] public int amount = 1;
 
     public void Interact(Player player)
     {
-        bool itemAddedSuccessfull = InventoryManager.Instance.AddInventoryItem(itemSO, this, amount);
+        bool itemAddedSuccessfull = InventoryManager.Instance.AddInventoryItem(_itemSO, this, amount);
 
         if (itemAddedSuccessfull)
         {

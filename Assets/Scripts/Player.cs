@@ -16,26 +16,24 @@ public class Player : MonoBehaviour, IHasHealth
         public IInteractable selectedObject;
     }
 
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private GameInput gameInput;
-    [SerializeField] private LayerMask interactableLayerMask;
-    [SerializeField] private LayerMask defaultLayerMask;
-    [SerializeField] private Transform playerLeftHandPoint;
+    [SerializeField] private float _moveSpeed;
+    [SerializeField] private GameInput _gameInput;
+    [SerializeField] private LayerMask _interactableLayerMask;
+    [SerializeField] private LayerMask _defaultLayerMask;
+    [SerializeField] private Transform _playerLeftHandPoint;
 
-    private int playerHealth = 100;
-    private float playerHealthChangeDelay = 3f;
-    private float playerHealtChangeTimer = 0f;
-    //private float torchBurningTimer = 0f;
-    //private float torchBurningTime = 10;
-    private Vector3 lastInteractDirection;
-    private IInteractable selectedObject;
-    private Item playerLeftHandHold;
+    private int _playerHealth = 100;
+    private float _playerHealthChangeDelay = 3f;
+    private float _playerHealtChangeTimer = 0f;
+    private Vector3 _lastInteractDirection;
+    private IInteractable _selectedObject;
+    private Item _playerLeftHandHold;
 
     public int PlayerHealth 
     {  
         get 
         { 
-            return playerHealth; 
+            return _playerHealth; 
         } 
         set
         {
@@ -43,13 +41,13 @@ public class Player : MonoBehaviour, IHasHealth
             int playerMaxHealth = 100;
             if (value < playerMinHealth)
             {
-                playerHealth = playerMinHealth;
+                _playerHealth = playerMinHealth;
             } else if (value > playerMaxHealth)
             {
-                playerHealth = playerMaxHealth;
+                _playerHealth = playerMaxHealth;
             } else 
             { 
-                playerHealth = value;
+                _playerHealth = value;
             }
 
             OnHealthChanged?.Invoke(this, new IHasHealth.OnHealthChangedEventArgs
@@ -67,14 +65,14 @@ public class Player : MonoBehaviour, IHasHealth
 
     private void Start()
     {
-        gameInput.OnInteractAction += GameInput_OnInteractAction;
+        _gameInput.OnInteractAction += GameInput_OnInteractAction;
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        if (selectedObject != null)
+        if (_selectedObject != null)
         {
-            selectedObject.Interact(this);
+            _selectedObject.Interact(this);
         }
     }
 
@@ -83,41 +81,22 @@ public class Player : MonoBehaviour, IHasHealth
         HandleMovement();
         HandleInteraction();
 
-        playerHealtChangeTimer -= Time.deltaTime;
+        _playerHealtChangeTimer -= Time.deltaTime;
 
         if (FireplaceHeatZone.Instance.IsPlayerTriggered())
         {
-            if (playerHealtChangeTimer < 0)
+            if (_playerHealtChangeTimer < 0)
             {
-                playerHealtChangeTimer = playerHealthChangeDelay;
+                _playerHealtChangeTimer = _playerHealthChangeDelay;
                 PlayerHealth += 10;
             }
         } else
         {
-            //if (playerLeftHandHold != null && playerLeftHandHold.GetItemSO().itemType == ItemSO.ItemType.Torch)
-            //{
-            //    torchBurningTimer += Time.deltaTime;
-            //    if (torchBurningTimer > torchBurningTime)
-            //    {
-            //        foreach (Transform child in  playerLeftHandPoint)
-            //        {
-            //            Destroy(child.gameObject);
-            //        }
-            //        playerLeftHandHold = null;
-            //    }
-            //    if (playerHealtChangeTimer < 0)
-            //    {
-            //        playerHealtChangeTimer = playerHealthChangeDelay;
-            //        Debug.Log("Player is under protection of torch");
-            //    }
-            //} else
-            //{
-                if (playerHealtChangeTimer < 0)
-                {
-                    playerHealtChangeTimer = playerHealthChangeDelay;
-                    PlayerHealth -= 10;
-                }
-            //}
+            if (_playerHealtChangeTimer < 0)
+            {
+                _playerHealtChangeTimer = _playerHealthChangeDelay;
+                PlayerHealth -= 10;
+            }
         }
     }
 
@@ -125,7 +104,7 @@ public class Player : MonoBehaviour, IHasHealth
     {
         float interactionRadius = 1f;
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, interactionRadius, interactableLayerMask);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, interactionRadius, _interactableLayerMask);
 
         IInteractable closestInteractable = null;
         float closestDistanceSqr = Mathf.Infinity;
@@ -146,7 +125,7 @@ public class Player : MonoBehaviour, IHasHealth
 
         if (closestInteractable != null)
         {
-            if (closestInteractable != selectedObject)
+            if (closestInteractable != _selectedObject)
             {
                 SetSelectedObject(closestInteractable);
             }
@@ -158,11 +137,11 @@ public class Player : MonoBehaviour, IHasHealth
 
     private void HandleMovement()
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
 
         Vector3 directionVector = GetDirectionVector(inputVector);
 
-        float moveDistance = moveSpeed * Time.deltaTime;
+        float moveDistance = _moveSpeed * Time.deltaTime;
 
         float playerRadius = .6f;
         float playerHeight = .6f;
@@ -234,7 +213,7 @@ public class Player : MonoBehaviour, IHasHealth
 
     private void SetSelectedObject(IInteractable selectedObject)
     {
-        this.selectedObject = selectedObject;
+        this._selectedObject = selectedObject;
 
         OnSelectedObjectChanged?.Invoke(this, new OnSelectedObjectChangedEventArgs
         {
@@ -244,6 +223,6 @@ public class Player : MonoBehaviour, IHasHealth
 
     public Vector3 GetLastInteractDirection()
     {
-        return lastInteractDirection;
+        return _lastInteractDirection;
     }
 }

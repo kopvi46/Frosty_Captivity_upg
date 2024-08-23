@@ -6,7 +6,7 @@ public class FireplaceHeatZone : MonoBehaviour
 {
     public static FireplaceHeatZone Instance {  get; private set; }
 
-    private bool isPlayerTriggered = false;
+    private bool _isPlayerTriggered = false;
 
     private void Awake()
     {
@@ -17,19 +17,19 @@ public class FireplaceHeatZone : MonoBehaviour
     {
         if (other.TryGetComponent<Player>(out Player player))
         {
-            isPlayerTriggered = true;
+            _isPlayerTriggered = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<Player>(out Player player))
         {
-            isPlayerTriggered = false;
+            _isPlayerTriggered = false;
         }
     }
 
     public bool IsPlayerTriggered()
     {
-        return isPlayerTriggered;
+        return _isPlayerTriggered;
     }
 }

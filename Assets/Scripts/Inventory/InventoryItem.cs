@@ -54,8 +54,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         RectTransform inventoryRect = parentAfterDrag.parent.GetComponent<RectTransform>();
         if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, Input.mousePosition))
         {
-            InventoryManager.Instance.DropInventoryItem(ItemSO, amount);
-            Destroy(gameObject);
+            InventoryManager.Instance.DropInventoryItem(ItemSO, this, amount);
         } else
         {
             transform.SetParent(parentAfterDrag);

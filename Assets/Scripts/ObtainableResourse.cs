@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class ObtainableResourse : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ObtainableResourseSO ObtainableResourseSO;
+    [SerializeField] private ObtainableResourseSO _ObtainableResourseSO;
 
-    private int interactionCount;
+    private int _interactionCount;
 
     public void Interact(Player player)
     {
-        interactionCount++;
+        _interactionCount++;
 
-        if (interactionCount >= ObtainableResourseSO.obtainProgressMax)
+        if (_interactionCount >= _ObtainableResourseSO.obtainProgressMax)
         {
             Destroy(gameObject);
 
-            for (int i = 0; i < ObtainableResourseSO.spawnItemAmount; i++)
+            for (int i = 0; i < _ObtainableResourseSO.spawnItemAmount; i++)
             {
                 SpawnItem();
             }
@@ -37,6 +37,6 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
         float randomRotation = Random.Range(0f, 360f);
         Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
 
-        Transform itemTransform = Instantiate(ObtainableResourseSO.itemSO.prefab, spawnPosition, spawnRotation);
+        Transform itemTransform = Instantiate(_ObtainableResourseSO.itemSO.prefab, spawnPosition, spawnRotation);
     }
 }

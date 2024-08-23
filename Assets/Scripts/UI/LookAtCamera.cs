@@ -12,11 +12,11 @@ public class LookAtCamera : MonoBehaviour
         CameraForwardInverted
     }
 
-    [SerializeField] private Mode mode;
+    [SerializeField] private Mode _mode;
 
     private void LateUpdate()
     {
-        switch (mode)
+        switch (_mode)
         {
             case Mode.LookAt:
                 transform.LookAt(Camera.main.transform);

@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
+    private PlayerInputActions _playerInputActions;
+
     public static GameInput Instance { get; private set; }
 
     public event EventHandler OnInteractAction;
-
-    private PlayerInputActions playerInputActions;
 
     private void Awake()
     {
         Instance = this;
 
-        playerInputActions = new PlayerInputActions();
+        _playerInputActions = new PlayerInputActions();
 
-        playerInputActions.Player.Enable();
+        _playerInputActions.Player.Enable();
 
-        playerInputActions.Player.Interact.performed += Interact_performed;
+        _playerInputActions.Player.Interact.performed += Interact_performed;
     }
 
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -29,12 +29,12 @@ public class GameInput : MonoBehaviour
 
     private void OnDestroy()
     {
-        playerInputActions.Dispose();
+        _playerInputActions.Dispose();
     }
 
     public Vector2 GetMovementVectorNormalized()
     {
-        Vector2 inputVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
+        Vector2 inputVector = _playerInputActions.Player.Movement.ReadValue<Vector2>();
 
         inputVector = inputVector.normalized;
 
