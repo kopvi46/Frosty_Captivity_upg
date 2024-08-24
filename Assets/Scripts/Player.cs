@@ -27,7 +27,7 @@ public class Player : MonoBehaviour, IHasHealth
     private float _playerHealtChangeTimer = 0f;
     private Vector3 _lastInteractDirection;
     private IInteractable _selectedObject;
-    private Item _playerLeftHandHold;
+    //private Item _playerLeftHandHold;
 
     public int PlayerHealth 
     {  
@@ -73,6 +73,12 @@ public class Player : MonoBehaviour, IHasHealth
         if (_selectedObject != null)
         {
             _selectedObject.Interact(this);
+        }
+
+        InventoryItem inventoryItem = InventoryManager.Instance.LeftHandSlot.GetComponentInChildren<InventoryItem>();
+        if (inventoryItem != null && inventoryItem.ItemSO.GetSpecificItemType().Equals(EquipmentSO.EquipmentType.Torch) && _selectedObject == Fireplace.Instance)
+        {
+            Debug.Log("Torch ignited!");
         }
     }
 

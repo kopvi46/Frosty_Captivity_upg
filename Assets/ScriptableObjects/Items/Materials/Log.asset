@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e8f303c637b02349b1dca4ecb980452, type: 3}
   m_Name: Log
   m_EditorClassIdentifier: 
-  itemType: 1
-  handType: 2
+  itemType: 0
   item: {fileID: 5305572729052619253, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
   isStackable: 1
-  maxStackAmount: 5
+  maxStackAmount: 10
   prefab: {fileID: 2509976594343172082, guid: 39ad1440b1d23264d8bd197da8af7a20, type: 3}
   sprite: {fileID: 21300000, guid: 87ea61440e43b6c4a8545442d85a5100, type: 3}
+  materialType: 1

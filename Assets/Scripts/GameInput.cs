@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
-    private PlayerInputActions _playerInputActions;
-
     public static GameInput Instance { get; private set; }
 
     public event EventHandler OnInteractAction;
+
+    private PlayerInputActions _playerInputActions;
 
     private void Awake()
     {

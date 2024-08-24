@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b2038104663c614c97e34c15962a345, type: 3}
+  m_Script: {fileID: 11500000, guid: 070e2e6d818d70a4eb59c3e8bab98a16, type: 3}
   m_Name: Spear
   m_EditorClassIdentifier: 
-  itemType: 5
-  handType: 1
+  itemType: 1
   item: {fileID: 5937282324088489062, guid: f3a875dbb7423d9408d515790f1b9275, type: 3}
   isStackable: 0
-  maxStackAmount: 0
+  maxStackAmount: 1
   prefab: {fileID: 7278841125950491218, guid: f3a875dbb7423d9408d515790f1b9275, type: 3}
   sprite: {fileID: 21300000, guid: dfbc3ae862c7aa046ae01ffa498fba63, type: 3}
+  equipmentType: 1
+  handType: 1

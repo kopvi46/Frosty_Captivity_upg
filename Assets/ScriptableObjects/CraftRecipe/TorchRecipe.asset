@@ -13,14 +13,8 @@ MonoBehaviour:
   m_Name: TorchRecipe
   m_EditorClassIdentifier: 
   ingredientsList:
-  - requiredItemSO: {fileID: 11400000, guid: 352c0f23667ed1e448ffdfb2e7f9c32e, type: 2}
-    requiredItem: {fileID: 896925213153045470, guid: 86fdbefd66676c1468cc7fc649dda260,
-      type: 3}
+  - requiredItemSO: {fileID: 11400000, guid: 41478caaa1781504c8269074707658db, type: 2}
     requiredAmount: 2
-  - requiredItemSO: {fileID: 11400000, guid: a9e454caff7d4f54a9c8b0b36e7dcfc8, type: 2}
-    requiredItem: {fileID: 5305572729052619253, guid: 39ad1440b1d23264d8bd197da8af7a20,
-      type: 3}
+  - requiredItemSO: {fileID: 11400000, guid: 50f68efdefa8d7c45a2008ddf22b970b, type: 2}
     requiredAmount: 1
-  craftedItemSO: {fileID: 11400000, guid: 7cc18a3aa21aa774e83105a27114c234, type: 2}
-  craftedItem: {fileID: 6192941658554714445, guid: 44aba25c88483af49a2c267f29cd9566,
-    type: 3}
+  craftedItemSO: {fileID: 11400000, guid: 8c653e646c903954c976730e85c7c7b1, type: 2}

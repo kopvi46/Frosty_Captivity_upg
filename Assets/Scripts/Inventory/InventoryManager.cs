@@ -7,14 +7,42 @@ using static UnityEditor.Progress;
 public class InventoryManager : MonoBehaviour
 {
     public event EventHandler OnInventoryChanged;
-    public static InventoryManager Instance {  get; private set; }
+    public static InventoryManager Instance { get; private set; }
 
     [SerializeField] private InventorySlot[] _inventorySlotArray;
     [SerializeField] private GameObject _inventoryItemPrefab;
+    [SerializeField] private SpecificInventorySlot _leftHandSlot;
+    [SerializeField] private SpecificInventorySlot _rightHandSlot;
+    [SerializeField] private RectTransform _inventoryUI;
+
+    [SerializeField] private ItemSO _branch;
+    [SerializeField] private ItemSO _log;
+    [SerializeField] private ItemSO _stone;
+
+    public RectTransform InventoryUI
+    {
+        get { return _inventoryUI; }
+        private set { _inventoryUI = value; }
+    }
+    public SpecificInventorySlot LeftHandSlot
+    {
+        get { return _leftHandSlot; }
+        private set { _leftHandSlot = value; }
+    }
+    public SpecificInventorySlot RightHandSlot
+    {
+        get { return _rightHandSlot; }
+        private set { _rightHandSlot = value; }
+    }
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        InitializeDefoltInventory();
     }
 
     public bool AddInventoryItem(ItemSO itemSO, Item item, int amount = 1)
@@ -108,5 +136,14 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] GetInventorySlotArray()
     {
         return _inventorySlotArray;
+    }
+
+    private void InitializeDefoltInventory()
+    {
+        SpawnNewInventoryItem(_branch, _inventorySlotArray[0], _branch.maxStackAmount);
+        SpawnNewInventoryItem(_log, _inventorySlotArray[1], _log.maxStackAmount);
+        SpawnNewInventoryItem(_stone, _inventorySlotArray[2], _stone.maxStackAmount);
+
+        OnInventoryChanged?.Invoke(this, EventArgs.Empty);
     }
 }

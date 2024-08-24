@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: AxeRecipe
   m_EditorClassIdentifier: 
   ingredientsList:
-  - requiredItemSO: {fileID: 11400000, guid: 352c0f23667ed1e448ffdfb2e7f9c32e, type: 2}
+  - requiredItemSO: {fileID: 11400000, guid: 41478caaa1781504c8269074707658db, type: 2}
     requiredAmount: 2
-  - requiredItemSO: {fileID: 11400000, guid: be2d77c8044b21c4dac7e5f8faca2e50, type: 2}
+  - requiredItemSO: {fileID: 11400000, guid: b9ae52e7dd523c249a8d4bbb0cb78210, type: 2}
     requiredAmount: 2
-  craftedItemSO: {fileID: 11400000, guid: 42af12f205775954f8218d373572e13b, type: 2}
+  craftedItemSO: {fileID: 11400000, guid: aa1f7b62c4da1cf41bff87461917f7ee, type: 2}

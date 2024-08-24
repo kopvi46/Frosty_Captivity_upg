@@ -51,7 +51,9 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         image.raycastTarget = true;
 
-        RectTransform inventoryRect = parentAfterDrag.parent.GetComponent<RectTransform>();
+        //Drop item if it was dragged away from Inventory
+        RectTransform inventoryRect = InventoryManager.Instance.InventoryUI;
+
         if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, Input.mousePosition))
         {
             InventoryManager.Instance.DropInventoryItem(ItemSO, this, amount);
