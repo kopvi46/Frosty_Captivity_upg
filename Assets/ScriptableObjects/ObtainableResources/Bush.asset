@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 7672180627156140996, guid: f343d9ac354eb4c4eb1bdf357ec2dd51, type: 3}
   itemSO: {fileID: 11400000, guid: 41478caaa1781504c8269074707658db, type: 2}
+  equipmentToObtain: {fileID: 0}
   obtainProgressMax: 2
   spawnItemAmount: 2
   objectName: Bush

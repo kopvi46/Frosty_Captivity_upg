@@ -21,6 +21,7 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private LayerMask _interactableLayerMask;
     [SerializeField] private LayerMask _defaultLayerMask;
     [SerializeField] private Transform _playerLeftHandPoint;
+    [SerializeField] private Transform _playerRightHandPoint;
 
     private int _playerHealth = 100;
     private float _playerHealthChangeDelay = 3f;
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour, IHasHealth
     private Vector3 _lastInteractDirection;
     private IInteractable _selectedObject;
     //private Item _playerLeftHandHold;
+    //private Item _playerRightHandHold;
 
     public int PlayerHealth 
     {  
@@ -56,6 +58,16 @@ public class Player : MonoBehaviour, IHasHealth
             });
         } 
     }
+    public Transform PlayerLeftHandPoint 
+    { 
+        get { return _playerLeftHandPoint;} 
+        private set { _playerLeftHandPoint = value; } 
+    }
+    public Transform PlayerRightHandPoint
+    {
+        get { return _playerRightHandPoint; }
+        private set { _playerRightHandPoint = value; }
+    }
 
 
     private void Awake()
@@ -66,6 +78,53 @@ public class Player : MonoBehaviour, IHasHealth
     private void Start()
     {
         _gameInput.OnInteractAction += GameInput_OnInteractAction;
+        InventoryManager.Instance.LeftHandSlot.OnItemAdded += LeftHandSlot_OnItemAdded;
+        InventoryManager.Instance.RightHandSlot.OnItemAdded += RightHandSlot_OnItemAdded;
+        InventoryManager.Instance.LeftHandSlot.OnItemRemoved += LeftHandSlot_OnItemRemoved;
+        InventoryManager.Instance.RightHandSlot.OnItemRemoved += RightHandSlot_OnItemRemoved;
+
+    }
+
+    private void RightHandSlot_OnItemRemoved(object sender, SpecificInventorySlot.OnItemRemovedEventArgs e)
+    {
+        foreach (Transform child in PlayerRightHandPoint.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        Debug.Log("Hide item");
+    }
+
+    private void LeftHandSlot_OnItemRemoved(object sender, SpecificInventorySlot.OnItemRemovedEventArgs e)
+    {
+        foreach (Transform child in PlayerLeftHandPoint.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        Debug.Log("Hide item");
+    }
+
+    private void RightHandSlot_OnItemAdded(object sender, SpecificInventorySlot.OnItemAddedEventArgs e)
+    {
+        Transform itemTransform = Instantiate(e.inventoryItem.ItemSO.prefab, PlayerRightHandPoint.transform.position, PlayerLeftHandPoint.transform.rotation);
+
+        itemTransform.SetParent(PlayerRightHandPoint.transform);
+
+        itemTransform.gameObject.layer = _defaultLayerMask;
+
+        Debug.Log("Show item");
+    }
+
+    private void LeftHandSlot_OnItemAdded(object sender, SpecificInventorySlot.OnItemAddedEventArgs e)
+    {
+        Transform itemTransform = Instantiate(e.inventoryItem.ItemSO.prefab, PlayerLeftHandPoint.transform.position, PlayerLeftHandPoint.transform.rotation);
+
+        itemTransform.SetParent(PlayerLeftHandPoint.transform);
+
+        itemTransform.gameObject.layer = _defaultLayerMask;
+
+        Debug.Log("Show item");
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
@@ -75,11 +134,11 @@ public class Player : MonoBehaviour, IHasHealth
             _selectedObject.Interact(this);
         }
 
-        InventoryItem inventoryItem = InventoryManager.Instance.LeftHandSlot.GetComponentInChildren<InventoryItem>();
-        if (inventoryItem != null && inventoryItem.ItemSO.GetSpecificItemType().Equals(EquipmentSO.EquipmentType.Torch) && _selectedObject == Fireplace.Instance)
-        {
-            Debug.Log("Torch ignited!");
-        }
+        //InventoryItem inventoryItem = InventoryManager.Instance.LeftHandSlot.GetComponentInChildren<InventoryItem>();
+        //if (inventoryItem != null && inventoryItem.ItemSO.GetSpecificItemType().Equals(EquipmentSO.EquipmentType.Torch) && _selectedObject == Fireplace.Instance)
+        //{
+        //    Debug.Log("Torch ignited!");
+        //}
     }
 
     private void Update()
@@ -98,10 +157,20 @@ public class Player : MonoBehaviour, IHasHealth
             }
         } else
         {
-            if (_playerHealtChangeTimer < 0)
+            if (PlayerLeftHandPoint.childCount != 0 && PlayerLeftHandPoint.GetComponentInChildren<Item>().ItemSO is EquipmentSO equipmentSO 
+                && equipmentSO.equipmentType == EquipmentSO.EquipmentType.Torch)
             {
-                _playerHealtChangeTimer = _playerHealthChangeDelay;
-                PlayerHealth -= 10;
+                if (_playerHealtChangeTimer < 0)
+                {
+                    //Debug.Log("Player under torch protection!");
+                }
+            } else
+            {
+                if (_playerHealtChangeTimer < 0)
+                {
+                    _playerHealtChangeTimer = _playerHealthChangeDelay;
+                    PlayerHealth -= 10;
+                }
             }
         }
     }

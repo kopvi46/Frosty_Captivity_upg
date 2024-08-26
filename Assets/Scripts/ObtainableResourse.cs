@@ -11,15 +11,21 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        _interactionCount++;
-
-        if (_interactionCount >= _ObtainableResourseSO.obtainProgressMax)
+        if (_ObtainableResourseSO.equipmentToObtain == null)
         {
-            Destroy(gameObject);
+            PerformInteraction();
 
-            for (int i = 0; i < _ObtainableResourseSO.spawnItemAmount; i++)
+            Debug.Log(_interactionCount);
+        } else
+        {
+            if (Player.Instance.PlayerRightHandPoint.childCount != 0
+                && Player.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>().ItemSO is EquipmentSO equipmentSO
+                && _ObtainableResourseSO.equipmentToObtain.equipmentType == equipmentSO.equipmentType)
             {
-                SpawnItem();
+                PerformInteraction();
+            } else
+            {
+                Debug.Log("You don't have propper equipment");
             }
         }
     }
@@ -38,5 +44,20 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
         Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
 
         Transform itemTransform = Instantiate(_ObtainableResourseSO.itemSO.prefab, spawnPosition, spawnRotation);
+    }
+
+    private void PerformInteraction()
+    {
+        _interactionCount++;
+
+        if (_interactionCount >= _ObtainableResourseSO.obtainProgressMax)
+        {
+            Destroy(gameObject);
+
+            for (int i = 0; i < _ObtainableResourseSO.spawnItemAmount; i++)
+            {
+                SpawnItem();
+            }
+        }
     }
 }

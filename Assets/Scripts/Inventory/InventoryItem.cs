@@ -5,18 +5,22 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static SpecificInventorySlot;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     private RectTransform _rectTransform;
     private CanvasGroup _canvasGroup;
     private Vector3 _scaleChange = new Vector3(.3f, .3f, .3f);
+    private Transform _parentBeforeDrag;
 
     [SerializeField] private TextMeshProUGUI _amountVisual;
 
     [HideInInspector] public int amount = 1;
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public Image image;
+
+    public bool IsNeedToDestroyVisual = false;
 
     public ItemSO ItemSO { get; private set; }
 
@@ -32,10 +36,16 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         _rectTransform.localScale += _scaleChange;
         _canvasGroup.blocksRaycasts = false;
 
+        _parentBeforeDrag = transform.parent;
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
         image.raycastTarget = false;
+
+        //if (parentAfterDrag.GetComponent<SpecificInventorySlot>() != null && parentAfterDrag.transform.childCount == 0)
+        //{
+        //    IsNeedToDestroyVisual = true;
+        //}
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -60,6 +70,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         } else
         {
             transform.SetParent(parentAfterDrag);
+
+            if (_parentBeforeDrag.childCount == 0)
+            {
+                SpecificInventorySlot specificInventorySlot = _parentBeforeDrag.GetComponent<SpecificInventorySlot>();
+                specificInventorySlot?.TriggerItemRemoved(this);
+                IsNeedToDestroyVisual = false;
+            }
         }
     }
 

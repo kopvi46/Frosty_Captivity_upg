@@ -117,12 +117,17 @@ public class InventoryManager : MonoBehaviour
         //Spawn item in a world and delete from inventory
         float spawnRadius = 2f;
 
-        Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-spawnRadius, spawnRadius), 0, UnityEngine.Random.Range(-spawnRadius, spawnRadius));
+        Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-spawnRadius, spawnRadius), .1f, UnityEngine.Random.Range(-spawnRadius, spawnRadius));
 
         Vector3 spawnPosition = Player.Instance.transform.position + randomOffset;
 
         float randomRotation = UnityEngine.Random.Range(0f, 360f);
         Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
+
+        if (inventoryItem.ItemSO is EquipmentSO)
+        {
+            spawnRotation = Quaternion.Euler(90, randomRotation, 0);
+        }
 
         Transform itemTransform = Instantiate(itemSO.prefab, spawnPosition, spawnRotation);
         Item newItem = itemTransform.GetComponent<Item>();

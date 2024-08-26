@@ -11,6 +11,12 @@ public class Item : MonoBehaviour, IInteractable
 
     [HideInInspector] public int amount = 1;
 
+    public ItemSO ItemSO
+    {
+        get { return _itemSO; }
+        private set { _itemSO = value; }
+    }
+
     public void Interact(Player player)
     {
         bool itemAddedSuccessfull = InventoryManager.Instance.AddInventoryItem(_itemSO, this, amount);
