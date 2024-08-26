@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Torch
   m_EditorClassIdentifier: 
   itemType: 1
-  item: {fileID: 6192941658554714445, guid: 44aba25c88483af49a2c267f29cd9566, type: 3}
+  item: {fileID: 7206029151395309725, guid: 44aba25c88483af49a2c267f29cd9566, type: 3}
   isStackable: 0
   maxStackAmount: 1
   prefab: {fileID: 5501835884631495091, guid: 44aba25c88483af49a2c267f29cd9566, type: 3}

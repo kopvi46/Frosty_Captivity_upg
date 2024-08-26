@@ -93,7 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7278841125950491218}
   - component: {fileID: 2055438232167081187}
-  - component: {fileID: 5937282324088489062}
+  - component: {fileID: -7088630675637227429}
+  - component: {fileID: 3293361563798239886}
   m_Layer: 6
   m_Name: Spear
   m_TagString: Untagged
@@ -141,7 +142,23 @@ CapsuleCollider:
   m_Height: 2.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.11, z: 0}
---- !u!114 &5937282324088489062
+--- !u!114 &-7088630675637227429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2657579511542114578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a701fe23b61b8148a71c31d4d55e337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemSO: {fileID: 11400000, guid: 5002e3b6a8503c44ebda16b9bd93cf57, type: 2}
+  amount: 1
+  durability: 0
+  durability: 0
+--- !u!114 &3293361563798239886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemSO: {fileID: 11400000, guid: 5002e3b6a8503c44ebda16b9bd93cf57, type: 2}
   amount: 1
+  durability: 100
 --- !u!1 &3884294625185347048
 GameObject:
   m_ObjectHideFlags: 0

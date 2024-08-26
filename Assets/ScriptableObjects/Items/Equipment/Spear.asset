@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spear
   m_EditorClassIdentifier: 
   itemType: 1
-  item: {fileID: 5937282324088489062, guid: f3a875dbb7423d9408d515790f1b9275, type: 3}
+  item: {fileID: 3293361563798239886, guid: f3a875dbb7423d9408d515790f1b9275, type: 3}
   isStackable: 0
   maxStackAmount: 1
   prefab: {fileID: 7278841125950491218, guid: f3a875dbb7423d9408d515790f1b9275, type: 3}

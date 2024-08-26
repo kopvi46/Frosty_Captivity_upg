@@ -145,10 +145,10 @@ GameObject:
   - component: {fileID: 5368727508824801786}
   - component: {fileID: 7517554041223522190}
   - component: {fileID: 6359233512387429068}
-  - component: {fileID: 2307550322328568083}
+  - component: {fileID: 2447235943379256216}
   - component: {fileID: 35820439652010125}
   m_Layer: 5
-  m_Name: InventoryItem
+  m_Name: InventoryMaterial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2307550322328568083
+--- !u!114 &2447235943379256216
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,13 +221,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2135207480894768848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a3e2d2b913d9e4a80ee7a297d78a8c, type: 3}
+  m_Script: {fileID: 11500000, guid: dd92e3dc099a46947abf032c78f67a03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _amountVisual: {fileID: 1407114862529857458}
   amount: 1
   parentAfterDrag: {fileID: 0}
-  image: {fileID: 6359233512387429068}
+  image: {fileID: 0}
 --- !u!225 &35820439652010125
 CanvasGroup:
   m_ObjectHideFlags: 0

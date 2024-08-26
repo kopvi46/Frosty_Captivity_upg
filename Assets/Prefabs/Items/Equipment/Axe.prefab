@@ -226,7 +226,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8029118531404857458}
   - component: {fileID: 1614254920399584899}
-  - component: {fileID: 2902591332991953455}
+  - component: {fileID: 8802330122791072060}
+  - component: {fileID: -306147310023558190}
   m_Layer: 6
   m_Name: Axe
   m_TagString: Untagged
@@ -272,7 +273,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5, y: 2, z: 0.22}
   m_Center: {x: 0.17, y: 0, z: 0}
---- !u!114 &2902591332991953455
+--- !u!114 &8802330122791072060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487356622326117419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d2cd37e0e71cf4c83112096101ea5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemSO: {fileID: 11400000, guid: aa1f7b62c4da1cf41bff87461917f7ee, type: 2}
+  amount: 1
+  durability: 0
+  durability: 0
+--- !u!114 &-306147310023558190
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -286,6 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemSO: {fileID: 11400000, guid: aa1f7b62c4da1cf41bff87461917f7ee, type: 2}
   amount: 1
+  durability: 100
 --- !u!1 &4620743861718977794
 GameObject:
   m_ObjectHideFlags: 0

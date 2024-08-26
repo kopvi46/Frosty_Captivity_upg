@@ -9,7 +9,8 @@ public class Item : MonoBehaviour, IInteractable
 {
     [SerializeField] private ItemSO _itemSO;
 
-    [HideInInspector] public int amount = 1;
+    [HideInInspector] public int amount;
+    [HideInInspector] public int durability;
 
     public ItemSO ItemSO
     {
@@ -19,7 +20,7 @@ public class Item : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        bool itemAddedSuccessfull = InventoryManager.Instance.AddInventoryItem(_itemSO, this, amount);
+        bool itemAddedSuccessfull = InventoryManager.Instance.AddInventoryItem(_itemSO, this, amount, durability);
 
         if (itemAddedSuccessfull)
         {

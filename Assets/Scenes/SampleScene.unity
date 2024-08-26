@@ -1767,6 +1767,8 @@ MonoBehaviour:
   - {fileID: 1925827381}
   _inventoryItemPrefab: {fileID: 2135207480894768848, guid: fb9b76e3e1d5a72499aa86ef35183b7a,
     type: 3}
+  _inventoryEquipmentPrefab: {fileID: 2135207480894768848, guid: 44c773d93274cd34188beb01ed64dff3,
+    type: 3}
   _leftHandSlot: {fileID: 1861274125}
   _rightHandSlot: {fileID: 1364871036}
   _inventoryUI: {fileID: 1259359565}

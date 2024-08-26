@@ -113,6 +113,10 @@ public class Player : MonoBehaviour, IHasHealth
 
         itemTransform.gameObject.layer = _defaultLayerMask;
 
+        InventoryEquipmentItem inventoryEquipmentItem = e.inventoryItem as InventoryEquipmentItem;
+
+        itemTransform.GetComponent<Item>().durability = inventoryEquipmentItem.durability;
+
         Debug.Log("Show item");
     }
 
@@ -123,6 +127,10 @@ public class Player : MonoBehaviour, IHasHealth
         itemTransform.SetParent(PlayerLeftHandPoint.transform);
 
         itemTransform.gameObject.layer = _defaultLayerMask;
+
+        InventoryEquipmentItem inventoryEquipmentItem = e.inventoryItem as InventoryEquipmentItem;
+
+        itemTransform.GetComponent<Item>().durability = inventoryEquipmentItem.durability;
 
         Debug.Log("Show item");
     }

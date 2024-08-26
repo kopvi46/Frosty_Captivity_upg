@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   itemType: 1
-  item: {fileID: 2902591332991953455, guid: c1e63b13af1e2bd43869466f13de9891, type: 3}
+  item: {fileID: -306147310023558190, guid: c1e63b13af1e2bd43869466f13de9891, type: 3}
   isStackable: 0
   maxStackAmount: 1
   prefab: {fileID: 8029118531404857458, guid: c1e63b13af1e2bd43869466f13de9891, type: 3}
