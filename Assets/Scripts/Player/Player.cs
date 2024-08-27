@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Player : MonoBehaviour, IHasHealth
+public class Player : MonoBehaviour
 {
     public static Player Instance;
 
-    public event EventHandler<IHasHealth.OnHealthChangedEventArgs> OnHealthChanged;
     public event EventHandler<OnSelectedObjectChangedEventArgs> OnSelectedObjectChanged;
 
     public class OnSelectedObjectChangedEventArgs : EventArgs
@@ -19,54 +18,9 @@ public class Player : MonoBehaviour, IHasHealth
     [SerializeField] private float _moveSpeed;
     [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _interactableLayerMask;
-    [SerializeField] private LayerMask _defaultLayerMask;
-    [SerializeField] private Transform _playerLeftHandPoint;
-    [SerializeField] private Transform _playerRightHandPoint;
 
-    private int _playerHealth = 100;
-    private float _playerHealthChangeDelay = 3f;
-    private float _playerHealtChangeTimer = 0f;
     private Vector3 _lastInteractDirection;
     private IInteractable _selectedObject;
-
-    public int PlayerHealth 
-    {  
-        get 
-        { 
-            return _playerHealth; 
-        } 
-        set
-        {
-            int playerMinHealth = 0;
-            int playerMaxHealth = 100;
-            if (value < playerMinHealth)
-            {
-                _playerHealth = playerMinHealth;
-            } else if (value > playerMaxHealth)
-            {
-                _playerHealth = playerMaxHealth;
-            } else 
-            { 
-                _playerHealth = value;
-            }
-
-            OnHealthChanged?.Invoke(this, new IHasHealth.OnHealthChangedEventArgs
-            {
-                healthNormalized = (float)PlayerHealth / playerMaxHealth
-            });
-        } 
-    }
-    public Transform PlayerLeftHandPoint 
-    { 
-        get { return _playerLeftHandPoint;} 
-        private set { _playerLeftHandPoint = value; } 
-    }
-    public Transform PlayerRightHandPoint
-    {
-        get { return _playerRightHandPoint; }
-        private set { _playerRightHandPoint = value; }
-    }
-
 
     private void Awake()
     {
@@ -76,61 +30,7 @@ public class Player : MonoBehaviour, IHasHealth
     private void Start()
     {
         _gameInput.OnInteractAction += GameInput_OnInteractAction;
-        InventoryManager.Instance.LeftHandSlot.OnItemAdded += LeftHandSlot_OnItemAdded;
-        InventoryManager.Instance.RightHandSlot.OnItemAdded += RightHandSlot_OnItemAdded;
-        InventoryManager.Instance.LeftHandSlot.OnItemRemoved += LeftHandSlot_OnItemRemoved;
-        InventoryManager.Instance.RightHandSlot.OnItemRemoved += RightHandSlot_OnItemRemoved;
 
-    }
-
-    private void RightHandSlot_OnItemRemoved(object sender, SpecificInventorySlot.OnItemRemovedEventArgs e)
-    {
-        foreach (Transform child in PlayerRightHandPoint.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        Debug.Log("Hide item");
-    }
-
-    private void LeftHandSlot_OnItemRemoved(object sender, SpecificInventorySlot.OnItemRemovedEventArgs e)
-    {
-        foreach (Transform child in PlayerLeftHandPoint.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        Debug.Log("Hide item");
-    }
-
-    private void RightHandSlot_OnItemAdded(object sender, SpecificInventorySlot.OnItemAddedEventArgs e)
-    {
-        Transform itemTransform = Instantiate(e.inventoryItem.ItemSO.prefab, PlayerRightHandPoint.transform.position, PlayerLeftHandPoint.transform.rotation);
-
-        itemTransform.SetParent(PlayerRightHandPoint.transform);
-
-        itemTransform.gameObject.layer = _defaultLayerMask;
-
-        InventoryEquipmentItem inventoryEquipmentItem = e.inventoryItem as InventoryEquipmentItem;
-
-        itemTransform.GetComponent<Item>().durability = inventoryEquipmentItem.durability;
-
-        Debug.Log("Show item");
-    }
-
-    private void LeftHandSlot_OnItemAdded(object sender, SpecificInventorySlot.OnItemAddedEventArgs e)
-    {
-        Transform itemTransform = Instantiate(e.inventoryItem.ItemSO.prefab, PlayerLeftHandPoint.transform.position, PlayerLeftHandPoint.transform.rotation);
-
-        itemTransform.SetParent(PlayerLeftHandPoint.transform);
-
-        itemTransform.gameObject.layer = _defaultLayerMask;
-
-        InventoryEquipmentItem inventoryEquipmentItem = e.inventoryItem as InventoryEquipmentItem;
-
-        itemTransform.GetComponent<Item>().durability = inventoryEquipmentItem.durability;
-
-        Debug.Log("Show item");
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
@@ -145,34 +45,6 @@ public class Player : MonoBehaviour, IHasHealth
     {
         HandleMovement();
         HandleInteraction();
-
-        _playerHealtChangeTimer -= Time.deltaTime;
-
-        if (FireplaceHeatZone.Instance.IsPlayerTriggered())
-        {
-            if (_playerHealtChangeTimer < 0)
-            {
-                _playerHealtChangeTimer = _playerHealthChangeDelay;
-                PlayerHealth += 10;
-            }
-        } else
-        {
-            if (PlayerLeftHandPoint.childCount != 0 && PlayerLeftHandPoint.GetComponentInChildren<Item>().ItemSO is EquipmentSO equipmentSO 
-                && equipmentSO.equipmentType == EquipmentSO.EquipmentType.Torch)
-            {
-                if (_playerHealtChangeTimer < 0)
-                {
-                    //Debug.Log("Player under torch protection!");
-                }
-            } else
-            {
-                if (_playerHealtChangeTimer < 0)
-                {
-                    _playerHealtChangeTimer = _playerHealthChangeDelay;
-                    PlayerHealth -= 10;
-                }
-            }
-        }
     }
 
     private void HandleInteraction()

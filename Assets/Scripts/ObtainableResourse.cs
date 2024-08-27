@@ -16,11 +16,11 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
             PerformInteraction(null);
         } else
         {
-            Item item = Player.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>();
+            Item item = PlayerInventory.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>();
             EquipmentSO equipmentSO = item?.ItemSO as EquipmentSO;
 
             if (item != null && equipmentSO != null
-                && Player.Instance.PlayerRightHandPoint.childCount != 0
+                && PlayerInventory.Instance.PlayerRightHandPoint.childCount != 0
                 && _ObtainableResourseSO.equipmentToObtain.equipmentType == equipmentSO.equipmentType)
             {
                 PerformInteraction(item);
