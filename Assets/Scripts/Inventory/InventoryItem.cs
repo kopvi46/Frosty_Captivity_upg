@@ -61,14 +61,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
     }
 
-    //public void InitializeItem(ItemSO itemSO, int amount = 1)
-    //{
-    //    ItemSO = itemSO;
-    //    image.sprite = itemSO.sprite;
-    //    this.amount = amount;
-    //    RefreshAmount();
-    //}
-
     public void RefreshAmount()
     {
         _amountVisual.text = amount.ToString();

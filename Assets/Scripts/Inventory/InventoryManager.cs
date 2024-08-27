@@ -15,15 +15,16 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private SpecificInventorySlot _leftHandSlot;
     [SerializeField] private SpecificInventorySlot _rightHandSlot;
     [SerializeField] private RectTransform _inventoryUI;
-
     [SerializeField] private ItemSO _branch;
     [SerializeField] private ItemSO _log;
     [SerializeField] private ItemSO _stone;
 
-    public RectTransform InventoryUI
-    {
+    public InventorySlot[] fireplaceInventorySlotArray;
+
+    public RectTransform InventoryUI 
+    { 
         get { return _inventoryUI; }
-        private set { _inventoryUI = value; }
+        private set {  _inventoryUI = value; }
     }
     public SpecificInventorySlot LeftHandSlot
     {

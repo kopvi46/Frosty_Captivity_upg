@@ -6,10 +6,6 @@ using UnityEngine.EventSystems;
 
 public class InventoryMaterialItem : InventoryItem
 {
-    //[SerializeField] private TextMeshProUGUI _amountVisual;
-
-    //[HideInInspector] public int amount = 1;
-
     public override void OnEndDrag(PointerEventData eventData)
     {
         _canvasGroup.alpha = 1f;
@@ -18,20 +14,42 @@ public class InventoryMaterialItem : InventoryItem
 
         image.raycastTarget = true;
 
-        //Drop item if it was dragged away from Inventory
+        //Drop item if it was dragged away from Inventory or use it to restore Fireplace if it was dragged on it
         RectTransform inventoryRect = InventoryManager.Instance.InventoryUI;
 
-        if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, Input.mousePosition))
-        {
-            InventoryManager.Instance.DropInventoryItem(ItemSO, this, amount, durability);
-        } else
-        {
-            transform.SetParent(parentAfterDrag);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+        bool isFireplaceHit = false;
 
-            if (_parentBeforeDrag.childCount == 0)
+        //Look for Fireplace
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform == Fireplace.Instance.transform)
             {
-                SpecificInventorySlot specificInventorySlot = _parentBeforeDrag.GetComponent<SpecificInventorySlot>();
-                specificInventorySlot?.TriggerItemRemoved(this);
+                Fireplace.Instance.RestoreFireplaceHealt(this);
+
+                Destroy(gameObject);
+
+                isFireplaceHit = true;
+                break;
+            }
+        }
+
+        //Drop item if Fireplace was not hit
+        if (!isFireplaceHit)
+        {
+            if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, Input.mousePosition))
+            {
+                InventoryManager.Instance.DropInventoryItem(ItemSO, this, amount, durability);
+            } else
+            {
+                transform.SetParent(parentAfterDrag);
+
+                if (_parentBeforeDrag.childCount == 0)
+                {
+                    SpecificInventorySlot specificInventorySlot = _parentBeforeDrag.GetComponent<SpecificInventorySlot>();
+                    specificInventorySlot?.TriggerItemRemoved(this);
+                }
             }
         }
     }
@@ -43,11 +61,4 @@ public class InventoryMaterialItem : InventoryItem
         this.amount = amount;
         RefreshAmount();
     }
-
-    //public void RefreshAmount()
-    //{
-    //    _amountVisual.text = amount.ToString();
-    //    bool isTextActive = amount > 1;
-    //    _amountVisual.gameObject.SetActive(isTextActive);
-    //}
 }

@@ -15,6 +15,7 @@ public class MaterialSO : ItemSO
     }
 
     public MaterialType materialType;
+    public int fireRestoraion;
 
     public override Enum GetSpecificItemType()
     {

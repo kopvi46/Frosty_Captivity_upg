@@ -28,8 +28,6 @@ public class Player : MonoBehaviour, IHasHealth
     private float _playerHealtChangeTimer = 0f;
     private Vector3 _lastInteractDirection;
     private IInteractable _selectedObject;
-    //private Item _playerLeftHandHold;
-    //private Item _playerRightHandHold;
 
     public int PlayerHealth 
     {  

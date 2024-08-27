@@ -57,6 +57,37 @@ public class Fireplace : MonoBehaviour, IHasHealth, IInteractable
         }
     }
 
+    public void RestoreFireplaceHealt(InventoryItem inventoryItem) 
+    {
+        MaterialSO materialSO = inventoryItem.ItemSO as MaterialSO;
+        bool isNeedToReturnRest = false;
+        int amountToReturn = inventoryItem.amount;
+
+        if (materialSO.fireRestoraion > 0)
+        {
+            for (int i = 0; i < inventoryItem.amount; i++)
+            {
+                FireplaceHealth += materialSO.fireRestoraion;
+
+                if (FireplaceHealth >= FireplaceMaxHealth)
+                {
+                    isNeedToReturnRest = true;
+                    amountToReturn -= i + 1;
+                    break;
+                }
+            }
+
+        } else
+        {
+            isNeedToReturnRest = true;
+        }
+
+        if (isNeedToReturnRest)
+        {
+            InventoryManager.Instance.AddInventoryItem(materialSO, inventoryItem.ItemSO.item, amountToReturn, inventoryItem.durability);
+        }
+    }
+
     public void Interact(Player player)
     {
         //Not implemented yet

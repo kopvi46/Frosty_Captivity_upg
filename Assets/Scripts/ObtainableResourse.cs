@@ -14,12 +14,10 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
         if (_ObtainableResourseSO.equipmentToObtain == null)
         {
             PerformInteraction(null);
-
-            Debug.Log(_interactionCount);
         } else
         {
             Item item = Player.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>();
-            EquipmentSO equipmentSO = item.ItemSO as EquipmentSO;
+            EquipmentSO equipmentSO = item?.ItemSO as EquipmentSO;
 
             if (item != null && equipmentSO != null
                 && Player.Instance.PlayerRightHandPoint.childCount != 0
