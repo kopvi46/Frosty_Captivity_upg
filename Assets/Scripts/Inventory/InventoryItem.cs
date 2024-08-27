@@ -5,25 +5,29 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static SpecificInventorySlot;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
-    private RectTransform _rectTransform;
-    private CanvasGroup _canvasGroup;
-    private Vector3 _scaleChange = new Vector3(.3f, .3f, .3f);
+    protected RectTransform _rectTransform;
+    protected CanvasGroup _canvasGroup;
+    protected Vector3 _scaleChange = new Vector3(.3f, .3f, .3f);
+    protected Transform _parentBeforeDrag;
 
-    [SerializeField] private TextMeshProUGUI _amountVisual;
+    [SerializeField] protected TextMeshProUGUI _amountVisual;
 
-    [HideInInspector] public int amount = 1;
+    [HideInInspector] public int amount;
+    [HideInInspector] public int durability;
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public Image image;
 
-    public ItemSO ItemSO { get; private set; }
+    public ItemSO ItemSO { get; protected set; }
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
         _canvasGroup = GetComponent<CanvasGroup>();
+        image = GetComponent<Image>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -32,6 +36,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         _rectTransform.localScale += _scaleChange;
         _canvasGroup.blocksRaycasts = false;
 
+        _parentBeforeDrag = transform.parent;
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
@@ -43,23 +48,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         transform.position = Input.mousePosition;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        _canvasGroup.alpha = 1f;
-        _rectTransform.localScale -= _scaleChange;
-        _canvasGroup.blocksRaycasts = true;
-
-        image.raycastTarget = true;
-
-        RectTransform inventoryRect = parentAfterDrag.parent.GetComponent<RectTransform>();
-        if (!RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, Input.mousePosition))
-        {
-            InventoryManager.Instance.DropInventoryItem(ItemSO, this, amount);
-        } else
-        {
-            transform.SetParent(parentAfterDrag);
-        }
-    }
+    public virtual void OnEndDrag(PointerEventData eventData) { }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -68,16 +57,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         } else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            InventoryManager.Instance.SplitInventoryItem(this);
+            InventoryManager.Instance.SplitInventoryItem(this as InventoryMaterialItem);
         }
-    }
-
-    public void InitializeItem(ItemSO itemSO, int amount = 1)
-    {
-        ItemSO = itemSO;
-        image.sprite = itemSO.sprite;
-        this.amount = amount;
-        RefreshAmount();
     }
 
     public void RefreshAmount()

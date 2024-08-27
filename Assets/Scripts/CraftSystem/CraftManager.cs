@@ -44,7 +44,7 @@ public class CraftManager : MonoBehaviour
                 {
                     InventoryItem inventoryItem = inventorySlot.GetComponentInChildren<InventoryItem>();
 
-                    if (inventoryItem != null && inventoryItem.ItemSO.itemType == ingredient.requiredItemSO.itemType)
+                    if (inventoryItem != null && inventoryItem.ItemSO.GetSpecificItemType().Equals(ingredient.requiredItemSO.GetSpecificItemType()))
                     {
                         availableAmountOfRequiredIngredient += inventoryItem.amount;
                     }

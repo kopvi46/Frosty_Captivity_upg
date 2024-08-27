@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SpearRecipe
   m_EditorClassIdentifier: 
   ingredientsList:
-  - requiredItemSO: {fileID: 11400000, guid: 352c0f23667ed1e448ffdfb2e7f9c32e, type: 2}
+  - requiredItemSO: {fileID: 11400000, guid: 41478caaa1781504c8269074707658db, type: 2}
     requiredAmount: 2
-  - requiredItemSO: {fileID: 11400000, guid: be2d77c8044b21c4dac7e5f8faca2e50, type: 2}
+  - requiredItemSO: {fileID: 11400000, guid: b9ae52e7dd523c249a8d4bbb0cb78210, type: 2}
     requiredAmount: 2
-  craftedItemSO: {fileID: 11400000, guid: 18500c671d363a148a38dfa563363b54, type: 2}
+  craftedItemSO: {fileID: 11400000, guid: 5002e3b6a8503c44ebda16b9bd93cf57, type: 2}

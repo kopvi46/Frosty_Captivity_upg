@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8f303c637b02349b1dca4ecb980452, type: 3}
+  m_Name: Plank
+  m_EditorClassIdentifier: 
+  itemType: 0
+  item: {fileID: 8763057626145385072, guid: 89cdf13931aa4e442b3405d46195c522, type: 3}
+  isStackable: 1
+  maxStackAmount: 10
+  prefab: {fileID: 4463587163267741756, guid: 89cdf13931aa4e442b3405d46195c522, type: 3}
+  sprite: {fileID: 21300000, guid: 34eb9b4bda6201347b1b5539f5c075dc, type: 3}
+  materialType: 3
+  fireRestoraion: 10

@@ -11,15 +11,22 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        _interactionCount++;
-
-        if (_interactionCount >= _ObtainableResourseSO.obtainProgressMax)
+        if (_ObtainableResourseSO.equipmentToObtain == null)
         {
-            Destroy(gameObject);
+            PerformInteraction(null);
+        } else
+        {
+            Item item = Player.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>();
+            EquipmentSO equipmentSO = item?.ItemSO as EquipmentSO;
 
-            for (int i = 0; i < _ObtainableResourseSO.spawnItemAmount; i++)
+            if (item != null && equipmentSO != null
+                && Player.Instance.PlayerRightHandPoint.childCount != 0
+                && _ObtainableResourseSO.equipmentToObtain.equipmentType == equipmentSO.equipmentType)
             {
-                SpawnItem();
+                PerformInteraction(item);
+            } else
+            {
+                Debug.Log("You don't have propper equipment");
             }
         }
     }
@@ -38,5 +45,34 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
         Quaternion spawnRotation = Quaternion.Euler(0, randomRotation, 0);
 
         Transform itemTransform = Instantiate(_ObtainableResourseSO.itemSO.prefab, spawnPosition, spawnRotation);
+    }
+
+    private void PerformInteraction(Item item)
+    {
+        
+        _interactionCount++;
+
+        if (item != null)
+        {
+            InventoryEquipmentItem inventoryEquipmentItem = InventoryManager.Instance.RightHandSlot.GetComponentInChildren<InventoryEquipmentItem>();
+
+            if (inventoryEquipmentItem != null)
+            {
+                item.durability -= 5;
+                item.InvokeOnDurabilityChanged();
+                inventoryEquipmentItem.durability = item.durability;
+                inventoryEquipmentItem.RefreshDurability();
+            }
+        }
+
+        if (_interactionCount >= _ObtainableResourseSO.obtainProgressMax)
+        {
+            Destroy(gameObject);
+
+            for (int i = 0; i < _ObtainableResourseSO.spawnItemAmount; i++)
+            {
+                SpawnItem();
+            }
+        }
     }
 }

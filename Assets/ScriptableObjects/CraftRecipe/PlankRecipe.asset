@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlankRecipe
   m_EditorClassIdentifier: 
   ingredientsList:
-  - requiredItemSO: {fileID: 11400000, guid: a9e454caff7d4f54a9c8b0b36e7dcfc8, type: 2}
+  - requiredItemSO: {fileID: 11400000, guid: 50f68efdefa8d7c45a2008ddf22b970b, type: 2}
     requiredAmount: 2
-  craftedItemSO: {fileID: 11400000, guid: 0fe1f5592b110654b90f4416d0b77b39, type: 2}
+  craftedItemSO: {fileID: 11400000, guid: 7883347bca0f45e4ebd42ef36cc4e827, type: 2}

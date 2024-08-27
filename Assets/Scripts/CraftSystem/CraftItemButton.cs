@@ -18,11 +18,13 @@ public class CraftItemButton : MonoBehaviour, IPointerClickHandler, IPointerEnte
     [HideInInspector] public CanvasGroup canvasGroup;
     [HideInInspector] public bool canCraftRecipe;
 
+    private void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
     private void Start()
     {
-
-        canvasGroup = GetComponent<CanvasGroup>();
-
         Image crafredItemImage = gameObject.GetComponent<Image>();
         crafredItemImage.sprite = _craftRecipeSO.craftedItemSO.sprite;
 
@@ -64,7 +66,7 @@ public class CraftItemButton : MonoBehaviour, IPointerClickHandler, IPointerEnte
                 {
                     InventoryItem inventoryItem = inventorySlot.GetComponentInChildren<InventoryItem>();
 
-                    if (inventoryItem != null && inventoryItem.ItemSO.itemType == ingredient.requiredItemSO.itemType)
+                    if (inventoryItem != null && inventoryItem.ItemSO.GetSpecificItemType().Equals(ingredient.requiredItemSO.GetSpecificItemType()))
                     {
                         for (int i = 0; i < ingredient.requiredAmount; i++)
                         {
@@ -93,7 +95,7 @@ public class CraftItemButton : MonoBehaviour, IPointerClickHandler, IPointerEnte
                 }
             }
 
-            InventoryManager.Instance.AddInventoryItem(_craftRecipeSO.craftedItemSO, _craftRecipeSO.craftedItemSO.item, 1);
+            InventoryManager.Instance.AddInventoryItem(_craftRecipeSO.craftedItemSO, _craftRecipeSO.craftedItemSO.item, 1, 100);
         }
     }
 }

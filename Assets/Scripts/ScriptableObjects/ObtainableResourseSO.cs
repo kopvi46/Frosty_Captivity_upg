@@ -7,6 +7,7 @@ public class ObtainableResourseSO : ScriptableObject
 {
     public Transform prefab;
     public ItemSO itemSO;
+    public EquipmentSO equipmentToObtain;
     public float obtainProgressMax;
     public float spawnItemAmount;
     public string objectName;

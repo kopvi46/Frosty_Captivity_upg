@@ -37,8 +37,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 }
             } else
             {
+                
                 //Slot have different item
-                if (storedItem != null)
+                if (storedItem != null && !droppedItem.parentAfterDrag.GetComponent<SpecificInventorySlot>())
                 {
                     storedItem.transform.SetParent(droppedItem.parentAfterDrag);
 
