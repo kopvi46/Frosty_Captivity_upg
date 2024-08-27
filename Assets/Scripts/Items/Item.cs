@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -7,10 +8,13 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
 {
+    public event EventHandler OnDurabilityChanged;
+
     [SerializeField] private ItemSO _itemSO;
 
     [HideInInspector] public int amount;
-    [HideInInspector] public int durability;
+
+    public int durability;
 
     public ItemSO ItemSO
     {
@@ -26,5 +30,10 @@ public class Item : MonoBehaviour, IInteractable
         {
             Destroy(gameObject);
         }
+    }
+
+    public void InvokeOnDurabilityChanged()
+    {
+        OnDurabilityChanged?.Invoke(this, EventArgs.Empty);
     }
 }

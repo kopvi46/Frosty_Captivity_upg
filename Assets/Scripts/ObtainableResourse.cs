@@ -13,16 +13,19 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
     {
         if (_ObtainableResourseSO.equipmentToObtain == null)
         {
-            PerformInteraction();
+            PerformInteraction(null);
 
             Debug.Log(_interactionCount);
         } else
         {
-            if (Player.Instance.PlayerRightHandPoint.childCount != 0
-                && Player.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>().ItemSO is EquipmentSO equipmentSO
+            Item item = Player.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>();
+            EquipmentSO equipmentSO = item.ItemSO as EquipmentSO;
+
+            if (item != null && equipmentSO != null
+                && Player.Instance.PlayerRightHandPoint.childCount != 0
                 && _ObtainableResourseSO.equipmentToObtain.equipmentType == equipmentSO.equipmentType)
             {
-                PerformInteraction();
+                PerformInteraction(item);
             } else
             {
                 Debug.Log("You don't have propper equipment");
@@ -46,9 +49,23 @@ public class ObtainableResourse : MonoBehaviour, IInteractable
         Transform itemTransform = Instantiate(_ObtainableResourseSO.itemSO.prefab, spawnPosition, spawnRotation);
     }
 
-    private void PerformInteraction()
+    private void PerformInteraction(Item item)
     {
+        
         _interactionCount++;
+
+        if (item != null)
+        {
+            InventoryEquipmentItem inventoryEquipmentItem = InventoryManager.Instance.RightHandSlot.GetComponentInChildren<InventoryEquipmentItem>();
+
+            if (inventoryEquipmentItem != null)
+            {
+                item.durability -= 5;
+                item.InvokeOnDurabilityChanged();
+                inventoryEquipmentItem.durability = item.durability;
+                inventoryEquipmentItem.RefreshDurability();
+            }
+        }
 
         if (_interactionCount >= _ObtainableResourseSO.obtainProgressMax)
         {

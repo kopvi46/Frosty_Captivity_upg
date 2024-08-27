@@ -31,11 +31,16 @@ public class InventoryEquipmentItem : InventoryItem
         {
             transform.SetParent(parentAfterDrag);
 
-            if (_parentBeforeDrag.childCount == 0)
-            {
-                SpecificInventorySlot specificInventorySlot = _parentBeforeDrag.GetComponent<SpecificInventorySlot>();
-                specificInventorySlot?.TriggerItemRemoved(this);
-            }
+            //if (_parentBeforeDrag.childCount == 0)
+            //{
+            //    SpecificInventorySlot specificInventorySlot = _parentBeforeDrag.GetComponent<SpecificInventorySlot>();
+            //    specificInventorySlot?.TriggerItemRemoved(this);
+            //}
+        }
+        if (_parentBeforeDrag.childCount == 0)
+        {
+            SpecificInventorySlot specificInventorySlot = _parentBeforeDrag.GetComponent<SpecificInventorySlot>();
+            specificInventorySlot?.TriggerItemRemoved(this);
         }
     }
 
@@ -49,6 +54,6 @@ public class InventoryEquipmentItem : InventoryItem
 
     public void RefreshDurability()
     {
-        _durabilityVisual.text = durability.ToString();
+        _durabilityVisual.text = durability.ToString() + "%";
     }
 }

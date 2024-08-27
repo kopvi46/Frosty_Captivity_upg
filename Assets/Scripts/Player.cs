@@ -141,12 +141,6 @@ public class Player : MonoBehaviour, IHasHealth
         {
             _selectedObject.Interact(this);
         }
-
-        //InventoryItem inventoryItem = InventoryManager.Instance.LeftHandSlot.GetComponentInChildren<InventoryItem>();
-        //if (inventoryItem != null && inventoryItem.ItemSO.GetSpecificItemType().Equals(EquipmentSO.EquipmentType.Torch) && _selectedObject == Fireplace.Instance)
-        //{
-        //    Debug.Log("Torch ignited!");
-        //}
     }
 
     private void Update()

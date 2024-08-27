@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Torch : MonoBehaviour, IUsable
+public class Torch : MonoBehaviour
 {
     private float _torchBurningDuration = 1;
     private float _torchBurningTimer = 0;
@@ -11,8 +11,6 @@ public class Torch : MonoBehaviour, IUsable
     private void Start()
     {
         _durability = transform.GetComponent<Item>().durability;
-        //InventoryEquipmentItem inventoryEquipmentItem = InventoryManager.Instance.LeftHandSlot.GetComponentInChildren<InventoryEquipmentItem>();
-        //_durability = inventoryEquipmentItem.durability;
     }
 
     private void Update()
@@ -47,10 +45,5 @@ public class Torch : MonoBehaviour, IUsable
                 }
             }
         }
-    }
-
-    public void UseItem(Player player)
-    {
-        
     }
 }

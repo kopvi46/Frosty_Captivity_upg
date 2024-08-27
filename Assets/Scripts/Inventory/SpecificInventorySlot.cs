@@ -31,29 +31,30 @@ public class SpecificInventorySlot : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        InventoryItem droppedItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-        EquipmentSO droppedEquipmentSO = droppedItem.ItemSO as EquipmentSO;
+        InventoryItem droppedEquipmentItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+        EquipmentSO droppedEquipmentItemSO = droppedEquipmentItem.ItemSO as EquipmentSO;
 
-        if (transform.childCount == 0 && droppedEquipmentSO != null && droppedEquipmentSO.handType == _storedItemType.handType)
+        if (transform.childCount == 0 && droppedEquipmentItemSO != null && droppedEquipmentItemSO.handType == _storedItemType.handType)
         {
             //Slot is empty
-            droppedItem.parentAfterDrag = transform;
+            droppedEquipmentItem.parentAfterDrag = transform;
 
-            OnItemAdded?.Invoke(this, new OnItemAddedEventArgs { inventoryItem = droppedItem, specificInventorySlot = this });
+            OnItemAdded?.Invoke(this, new OnItemAddedEventArgs { inventoryItem = droppedEquipmentItem, specificInventorySlot = this });
 
-        } else if (transform.childCount != 0 && droppedEquipmentSO != null && droppedEquipmentSO.handType == _storedItemType.handType)
+        } else if (transform.childCount != 0 && droppedEquipmentItemSO != null && droppedEquipmentItemSO.handType == _storedItemType.handType)
         {
             //Slot is not empty
-            InventoryItem storedItem = GetComponentInChildren<InventoryItem>();
+            InventoryItem storedEquipmentItem = GetComponentInChildren<InventoryItem>();
+            EquipmentSO storedEquipmentItemSO = storedEquipmentItem.ItemSO as EquipmentSO;
 
-            if (storedItem != null)
+            if (storedEquipmentItem != null && droppedEquipmentItemSO != null && droppedEquipmentItemSO.handType == storedEquipmentItemSO.handType)
             {
-                storedItem.transform.SetParent(droppedItem.parentAfterDrag);
+                storedEquipmentItem.transform.SetParent(droppedEquipmentItem.parentAfterDrag);
 
-                OnItemRemoved?.Invoke(this, new OnItemRemovedEventArgs { inventoryItem = storedItem, specificInventorySlot = this });
+                OnItemRemoved?.Invoke(this, new OnItemRemovedEventArgs { inventoryItem = storedEquipmentItem, specificInventorySlot = this });
 
-                droppedItem.parentAfterDrag = transform;
-                OnItemAdded?.Invoke(this, new OnItemAddedEventArgs { inventoryItem = droppedItem, specificInventorySlot = this });
+                droppedEquipmentItem.parentAfterDrag = transform;
+                OnItemAdded?.Invoke(this, new OnItemAddedEventArgs { inventoryItem = droppedEquipmentItem, specificInventorySlot = this });
             }
         }
     }

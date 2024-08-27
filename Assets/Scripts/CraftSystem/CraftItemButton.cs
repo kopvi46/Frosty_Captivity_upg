@@ -95,7 +95,7 @@ public class CraftItemButton : MonoBehaviour, IPointerClickHandler, IPointerEnte
                 }
             }
 
-            InventoryManager.Instance.AddInventoryItem(_craftRecipeSO.craftedItemSO, _craftRecipeSO.craftedItemSO.item, 1, 55);
+            InventoryManager.Instance.AddInventoryItem(_craftRecipeSO.craftedItemSO, _craftRecipeSO.craftedItemSO.item, 1, 100);
         }
     }
 }
