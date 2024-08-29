@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
+    [SerializeField] private HeatMapVisual heatMapVisual;
+
     private MyGrid myGrid;
 
     private void Start()
     {
-        myGrid = new MyGrid(50, 50, 2f, 5, transform.position);
+        myGrid = new MyGrid(10, 5, 4f, 200, transform.position);
+
+        heatMapVisual.SetGrid(myGrid);
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            myGrid.SetValue(GetMouseWorldPosition(), Random.Range(1, 99));
+            Vector3 position = GetMouseWorldPosition();
+            int value = myGrid.GetValue(position);
+            myGrid.SetValue(position, value + 5);
         }
 
         if (Input.GetMouseButtonDown(1))
