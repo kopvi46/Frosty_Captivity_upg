@@ -11,41 +11,43 @@ public class MyGrid
     private int width;
     private int depth;
     private float cellSize;
+    private int fontSize;
+    private Vector3 originPosition;
     private int[,] gridArray;
-    private TextMesh[,] debugTextArray;
 
-    public MyGrid(int width, int height, float cellSize)
+    public MyGrid(int width, int depth, float cellSize, int fontSize, Vector3 originPosition)
     {
         this.width = width;
-        this.depth = height;
+        this.depth = depth;
         this.cellSize = cellSize;
+        this.fontSize = fontSize;
+        this.originPosition = originPosition;
 
-        gridArray = new int[width, height];
-        debugTextArray = new TextMesh[width, height];
+        gridArray = new int[width, depth];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int z = 0; z < gridArray.GetLength(1); z++)
             {
-                debugTextArray[x, z] = CreateWorldText(gridArray[x, z].ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, 5, Color.black, TextAnchor.MiddleCenter);
+                CreateWorldText(gridArray[x, z].ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, fontSize, Color.black, TextAnchor.MiddleCenter);
                 Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z + 1), Color.black, 100f);
                 Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x + 1, z), Color.black, 100f);
 
             }
         }
-        Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.black, 100f);
-        Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.black, 100f);
+        Debug.DrawLine(GetWorldPosition(0, depth), GetWorldPosition(width, depth), Color.black, 100f);
+        Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, depth), Color.black, 100f);
     }
 
     private Vector3 GetWorldPosition(int x, int z)
     {
-        return new Vector3(x, 0, z) * cellSize;
+        return new Vector3(x, 0, z) * cellSize + originPosition;
     }
 
     private void GetXZ(Vector3 worldPosition, out int x, out int z)
     {
-        x = Mathf.FloorToInt(worldPosition.x / cellSize);
-        z = Mathf.FloorToInt(worldPosition.z / cellSize);
+        x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
+        z = Mathf.FloorToInt((worldPosition - originPosition).z / cellSize);
     }
 
     public void SetValue(int x, int z, int value)
@@ -53,7 +55,6 @@ public class MyGrid
         if (x >= 0 && z >= 0 && x < width && z < depth)
         {
             gridArray[x, z] = value;
-            debugTextArray[x, z].text = gridArray[x, z].ToString();
         }
     }
 
@@ -86,6 +87,7 @@ public class MyGrid
     {
         if (color == null) color = Color.white;
         return CreateWorldText(parent, text, localPosition, fontSize, (Color)color, textAnchor, textAlignment, sortingOrder);
+
     }
 
     public TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sortingOrder)

@@ -8,7 +8,7 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        myGrid = new MyGrid(25, 25, 2f);
+        myGrid = new MyGrid(50, 50, 2f, 5, transform.position);
     }
 
     private void Update()
