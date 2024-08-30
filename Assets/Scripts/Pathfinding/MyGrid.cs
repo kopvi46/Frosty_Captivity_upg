@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.Rendering.DebugUI;
 
-public class MyGrid
+public class MyGrid<TGridObject>
 {
     public const int HEAT_MAP_MAX_VALUE = 100;
     public const int HEAT_MAP_MIN_VALUE = 0;
@@ -19,13 +19,13 @@ public class MyGrid
 
     private int _fontSize;
     private Vector3 _originPosition;
-    private int[,] _gridArray;
+    private TGridObject[,] _gridArray;
 
     public int Width { get; private set; }
     public int Depth { get; private set; }
     public float CellSize { get; private set; }
 
-    public MyGrid(int width, int depth, float cellSize, int fontSize, Vector3 originPosition)
+    public MyGrid(int width, int depth, float cellSize, int fontSize, Vector3 originPosition, Func<MyGrid<TGridObject>, int, int, TGridObject> createGridObject)
     {
         Width = width;
         Depth = depth;
@@ -33,9 +33,17 @@ public class MyGrid
         _fontSize = fontSize;
         _originPosition = originPosition;
 
-        _gridArray = new int[width, depth];
+        _gridArray = new TGridObject[width, depth];
 
-        bool showDebug = false;
+        for (int x = 0; x < _gridArray.GetLength(0); x++)
+        {
+            for (int z = 0; z < _gridArray.GetLength(1); z++)
+            {
+                _gridArray[x, z] = createGridObject(this, x, z);
+            }
+        }
+
+                bool showDebug = true;
         if (showDebug)
         {
             TextMesh[,] debugTextArray = new TextMesh[width, depth];
@@ -44,7 +52,7 @@ public class MyGrid
             {
                 for (int z = 0; z < _gridArray.GetLength(1); z++)
                 {
-                    debugTextArray[x, z] = CreateWorldText(_gridArray[x, z].ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, fontSize, Color.white, TextAnchor.MiddleCenter);
+                    debugTextArray[x, z] = MyGridUtils.CreateWorldText(_gridArray[x, z]?.ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, fontSize, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x + 1, z), Color.white, 100f);
 
@@ -55,7 +63,7 @@ public class MyGrid
 
             OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) =>
             {
-                debugTextArray[eventArgs.x, eventArgs.z].text = _gridArray[eventArgs.x, eventArgs.z].ToString();
+                debugTextArray[eventArgs.x, eventArgs.z].text = _gridArray[eventArgs.x, eventArgs.z]?.ToString();
             };
         }
     }
@@ -71,105 +79,84 @@ public class MyGrid
         z = Mathf.FloorToInt((worldPosition - _originPosition).z / CellSize);
     }
 
-    private void SetValue(int x, int z, int value)
+    private void SetGridObject(int x, int z, TGridObject value)
     {
         if (x >= 0 && z >= 0 && x < Width && z < Depth)
         {
-            _gridArray[x, z] = Mathf.Clamp(value, HEAT_MAP_MIN_VALUE, HEAT_MAP_MAX_VALUE);
+            _gridArray[x, z] = value;
             if (OnGridValueChanged != null) OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z });
         }
     }
 
-    public void SetValue(Vector3 worldPosition, int value)
+    public void TriggerGridObjectChanged(int x, int z)
+    {
+        if (OnGridValueChanged != null) OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z });
+    }
+
+    public void SetGridObject(Vector3 worldPosition, TGridObject value)
     {
         int x, z;
         GetXZ(worldPosition, out x, out z);
-        SetValue(x, z, value);
+        SetGridObject(x, z, value);
     }
 
-    public void AddValue(int x, int z, int value)
-    {
-        SetValue(x, z, GetValue(x, z) + value);
-    }
-
-    public int GetValue(int x, int z)
+    public TGridObject GetGridObject(int x, int z)
     {
         if (x >= 0 && z >= 0 && x < Width && z < Depth)
         {
             return _gridArray[x, z];
         } else
         {
-            return 0;
+            return default(TGridObject);
         }
     }
 
-    public int GetValue(Vector3 worldPosition)
+    public TGridObject GetGridObject(Vector3 worldPosition)
     {
         int x, z;
         GetXZ(worldPosition, out x, out z);
-        return GetValue(x, z);
+        return GetGridObject(x, z);
     }
 
-    public void AddValue(Vector3 worldPosition, int value, int fullValueRange, int totalRange)
-    {
-        int lowerValueAmount = Mathf.RoundToInt((float)value / (totalRange - fullValueRange));
+    //Specific methods for heatMap
+    //public void AddValue(int x, int z, int value)
+    //{
+    //    SetValue(x, z, GetValue(x, z) + value);
+    //}
 
-        GetXZ(worldPosition, out int originX, out int originZ);
-        for (int x = 0; x < totalRange; x++)
-        {
-            for (int z = 0; z < totalRange - x; z++)
-            {
-                int radius = x + z;
-                int addValueAmount = value;
+    //public void AddValue(Vector3 worldPosition, int value, int fullValueRange, int totalRange)
+    //{
+    //    int lowerValueAmount = Mathf.RoundToInt((float)value / (totalRange - fullValueRange));
 
-                if (radius > fullValueRange)
-                {
-                    addValueAmount -= lowerValueAmount * (radius - fullValueRange);
-                }
+    //    GetXZ(worldPosition, out int originX, out int originZ);
+    //    for (int x = 0; x < totalRange; x++)
+    //    {
+    //        for (int z = 0; z < totalRange - x; z++)
+    //        {
+    //            int radius = x + z;
+    //            int addValueAmount = value;
 
-                AddValue(originX + x, originZ + z, addValueAmount);
+    //            if (radius > fullValueRange)
+    //            {
+    //                addValueAmount -= lowerValueAmount * (radius - fullValueRange);
+    //            }
 
-                if (x != 0)
-                {
-                    AddValue(originX - x, originZ + z, addValueAmount);
-                }
-                if (z != 0)
-                {
-                    AddValue(originX + x, originZ - z, addValueAmount);
-                    if (x != 0)
-                    {
-                        AddValue(originX - x, originZ - z, addValueAmount);
-                    }
-                }
+    //            AddValue(originX + x, originZ + z, addValueAmount);
 
-            }
-        }
-    }
+    //            if (x != 0)
+    //            {
+    //                AddValue(originX - x, originZ + z, addValueAmount);
+    //            }
+    //            if (z != 0)
+    //            {
+    //                AddValue(originX + x, originZ - z, addValueAmount);
+    //                if (x != 0)
+    //                {
+    //                    AddValue(originX - x, originZ - z, addValueAmount);
+    //                }
+    //            }
 
-    private TextMesh CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default(Vector3), int fontSize = 40, Color? color = null, TextAnchor textAnchor = TextAnchor.UpperLeft, TextAlignment textAlignment = TextAlignment.Left, int sortingOrder = 5000)
-    {
-        if (color == null) color = Color.white;
-        return CreateWorldText(parent, text, localPosition, fontSize, (Color)color, textAnchor, textAlignment, sortingOrder);
-
-    }
-
-    private TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sortingOrder)
-    {
-        GameObject gameObject = new GameObject("World_Text", typeof(TextMesh));
-        Transform transform = gameObject.transform;
-        transform.SetParent(parent, false);
-        transform.localPosition = localPosition;
-
-        transform.localEulerAngles = new Vector3(90, 0, 0);
-        transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-
-        TextMesh textMesh = gameObject.GetComponent<TextMesh>();
-        textMesh.anchor = textAnchor;
-        textMesh.alignment = textAlignment;
-        textMesh.text = text;
-        textMesh.fontSize = fontSize;
-        textMesh.color = color;
-        textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
-        return textMesh;
-    }
+    //        }
+    //    }
+    //}
 }
