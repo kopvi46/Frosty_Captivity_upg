@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Pathfinding
 {
+    public static Pathfinding Instance { get; private set; }
+
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
 
@@ -13,6 +16,7 @@ public class Pathfinding
 
     public Pathfinding(int width, int depth, Vector3 position)
     {
+        Instance = this;
         _myGrid = new MyGrid<PathNode>(width, depth, 4f, 150, position, (MyGrid<PathNode> g, int x, int z) => new PathNode(g, x, z));
     }
 
@@ -25,6 +29,11 @@ public class Pathfinding
     {
         PathNode startNode = _myGrid.GetGridObject(startX, startZ);
         PathNode endNode = _myGrid.GetGridObject(endX, endZ);
+
+        if (startNode == null || endNode == null)
+        {
+            return null;
+        }
 
         _openList = new List<PathNode> { startNode };
         _closedList = new List<PathNode>();
@@ -60,6 +69,11 @@ public class Pathfinding
             foreach (PathNode neighbourNode in GetNeighboursList(currentNode))
             {
                 if (_closedList.Contains(neighbourNode)) continue;
+                if (!neighbourNode.isWalkable)
+                {
+                    _closedList.Add(neighbourNode);
+                    continue;
+                }
 
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
                 if (tentativeGCost < neighbourNode.gCost)
@@ -81,38 +95,73 @@ public class Pathfinding
         return null;
     }
 
+    public List<Vector3> FindPath(Vector3 startWorldPosotion, Vector3 endWorldPosotion)
+    {
+        _myGrid.GetXZ(startWorldPosotion, out int startX, out int startZ);
+        _myGrid.GetXZ(endWorldPosotion, out int endX, out int endZ);
+
+        List<PathNode> path = FindPath(startX, startZ, endX, endZ);
+        if (path == null)
+        {
+            return null;
+        } else
+        {
+            List<Vector3> vectorPath = new List<Vector3>();
+            foreach (PathNode pathNode in path)
+            {
+                vectorPath.Add(new Vector3(pathNode.x, pathNode.z) * _myGrid.CellSize + Vector3.one * _myGrid.CellSize * .5f);
+            }
+            return vectorPath;
+        }
+    }
+
     private List<PathNode> GetNeighboursList(PathNode currentNode)
     {
         List<PathNode> neighboursList = new List<PathNode>();
 
+        //Check left neighbours
         if (currentNode.x - 1 >= 0)
         {
-            //Left
-            neighboursList.Add(GetNode(currentNode.x - 1, currentNode.z));
-            //Left down
-            if (currentNode.z - 1 >= 0) neighboursList.Add(GetNode(currentNode.x - 1, currentNode.z - 1));
-            //Left up
-            if (currentNode.z + 1 < _myGrid.Depth) neighboursList.Add(GetNode(currentNode.x - 1, currentNode.z + 1));
+            TryAddNeighbour(neighboursList, currentNode.x - 1, currentNode.z);// Left
+            TryAddNeighbour(neighboursList, currentNode.x - 1, currentNode.z - 1); // Left down
+            TryAddNeighbour(neighboursList, currentNode.x - 1, currentNode.z + 1); // Left up
         }
+
+        //Check right neighbours
         if (currentNode.x + 1 < _myGrid.Width)
         {
-            //Right
-            neighboursList.Add(GetNode(currentNode.x + 1, currentNode.z));
-            //Right down
-            if (currentNode.z - 1 >= 0) neighboursList.Add(GetNode(currentNode.x + 1, currentNode.z - 1));
-            //Right up
-            if (currentNode.z + 1 < _myGrid.Depth) neighboursList.Add(GetNode(currentNode.x + 1, currentNode.z + 1));
+            TryAddNeighbour(neighboursList, currentNode.x + 1, currentNode.z);// Right
+            TryAddNeighbour(neighboursList, currentNode.x + 1, currentNode.z - 1); // Right down
+            TryAddNeighbour(neighboursList, currentNode.x + 1, currentNode.z + 1); // Right up
         }
-        //Down
-        if (currentNode.z - 1 >= 0) neighboursList.Add(GetNode(currentNode.x, currentNode.z - 1));
-        //Up
-        if (currentNode.z + 1 <= _myGrid.Depth) neighboursList.Add(GetNode(currentNode.x, currentNode.z + 1));
+
+        //Check down neighbours
+        TryAddNeighbour(neighboursList, currentNode.x, currentNode.z - 1); // Down
+
+        //Check up neighbours
+        TryAddNeighbour(neighboursList, currentNode.x, currentNode.z + 1); // Up
 
         return neighboursList;
     }
 
-    private PathNode GetNode(int x, int z)
+    private void TryAddNeighbour(List<PathNode> neighboursList, int x, int z)
     {
+        if (x >= 0 && z >= 0 && x < _myGrid.Width && z < _myGrid.Depth)
+        {
+            PathNode neighbourNode = GetNode(x, z);
+            if (neighbourNode != null)
+            {
+                neighboursList.Add(neighbourNode);
+            } else
+            {
+                Debug.LogError($"Neighbour is null for node: {x}, {z}");
+            }
+        }
+    }
+
+    public PathNode GetNode(int x, int z)
+    {
+        if (_myGrid.GetGridObject(x, z) == null) Debug.LogError("Neighbour is null for node: " + x + "-" + z);
         return _myGrid.GetGridObject(x, z);
     }
 

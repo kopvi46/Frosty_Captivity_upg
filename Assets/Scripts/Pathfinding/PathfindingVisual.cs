@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeatMapGenericVisual : MonoBehaviour
+public class PathfindingVisual : MonoBehaviour
 {
-    private MyGrid<HeatMapGridObject> myGrid;
+    private MyGrid<PathNode> myGrid;
     private Mesh mesh;
     private bool updateMesh;
 
@@ -14,7 +14,7 @@ public class HeatMapGenericVisual : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
-    public void SetGrid(MyGrid<HeatMapGridObject> myGrid)
+    public void SetGrid(MyGrid<PathNode> myGrid)
     {
         this.myGrid = myGrid;
         UpdateHeatMapVisual();
@@ -22,7 +22,7 @@ public class HeatMapGenericVisual : MonoBehaviour
         myGrid.OnGridValueChanged += MyGrid_OnGridValueChanged;
     }
 
-    private void MyGrid_OnGridValueChanged(object sender, MyGrid<HeatMapGridObject>.OnGridValueChangedEventArgs e)
+    private void MyGrid_OnGridValueChanged(object sender, MyGrid<PathNode>.OnGridValueChangedEventArgs e)
     {
         updateMesh = true;
     }
@@ -48,11 +48,14 @@ public class HeatMapGenericVisual : MonoBehaviour
                 int index = x * myGrid.Depth + z;
                 Vector3 quadSize = new Vector3(1, 0, 1) * myGrid.CellSize;
 
-                HeatMapGridObject gridObject = myGrid.GetGridObject(x, z);
-                float gridValueNormalized = gridObject.GetValueNormalized();
-                Vector2 myGridValueUV = new Vector2(gridValueNormalized, 0f);
+                PathNode pathNode = myGrid.GetGridObject(x, z);
 
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, myGrid.GetWorldPosition(x, z) + quadSize * .5f, 0f, quadSize, myGridValueUV, myGridValueUV);
+                if (pathNode.isWalkable)
+                {
+                    quadSize = Vector3.zero;
+                }
+
+                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, myGrid.GetWorldPosition(x, z) + quadSize * .5f, 0f, quadSize, Vector2.zero, Vector2.zero);
             }
         }
 
