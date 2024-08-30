@@ -10,7 +10,7 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        myGrid = new MyGrid(10, 5, 4f, 200, transform.position);
+        myGrid = new MyGrid(40, 20, 4f, 200, transform.position);
 
         heatMapVisual.SetGrid(myGrid);
     }
@@ -20,8 +20,7 @@ public class Testing : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 position = GetMouseWorldPosition();
-            int value = myGrid.GetValue(position);
-            myGrid.SetValue(position, value + 5);
+            myGrid.AddValue(position, 100, 2, 5);
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -30,8 +29,11 @@ public class Testing : MonoBehaviour
         }
     }
 
+    // Get Mouse Position in 3D World
     private Vector3 GetMouseWorldPosition()
     {
+        //Use this method if it is a 3D game
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plane = new Plane(Vector3.up, 0);
 
@@ -43,4 +45,17 @@ public class Testing : MonoBehaviour
 
         return Vector3.zero;
     }
+
+    // Get Mouse Position in 2D World with Z = 0f
+    //public static Vector3 GetMouseWorldPosition()
+    //{
+    //    Vector3 vec = GetMouseWorldPositionWithZ(Input.mousePosition, Camera.main);
+    //    vec.z = 0f;
+    //    return vec;
+    //}
+    //public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPosition, Camera worldCamera)
+    //{
+    //    Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
+    //    return worldPosition;
+    //}
 }
