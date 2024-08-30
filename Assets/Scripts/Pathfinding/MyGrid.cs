@@ -73,7 +73,7 @@ public class MyGrid<TGridObject>
         return new Vector3(x, 0, z) * CellSize + _originPosition;
     }
 
-    private void GetXZ(Vector3 worldPosition, out int x, out int z)
+    public void GetXZ(Vector3 worldPosition, out int x, out int z)
     {
         x = Mathf.FloorToInt((worldPosition - _originPosition).x / CellSize);
         z = Mathf.FloorToInt((worldPosition - _originPosition).z / CellSize);
