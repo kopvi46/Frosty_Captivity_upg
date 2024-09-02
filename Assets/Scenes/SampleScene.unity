@@ -3256,10 +3256,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b313095ce4c794ca483f0e0fcd0e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 50
-  depth: 50
-  cellSize: 2
-  fontSize: 75
+  _width: 25
+  _depth: 25
+  _cellSize: 4
+  _fontSize: 150
 --- !u!4 &1264173657
 Transform:
   m_ObjectHideFlags: 0

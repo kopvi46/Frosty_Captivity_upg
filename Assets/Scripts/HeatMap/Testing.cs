@@ -5,22 +5,22 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    [SerializeField] private HeatMapGenericVisual heatMapGenericVisual;
+    [SerializeField] private HeatMapGenericVisual _heatMapGenericVisual;
 
-    private MyGrid<HeatMapGridObject> myGrid;
-    private MyGrid<StringGridObject> myStringGrid;
+    private MyGrid<HeatMapGridObject> _myGrid;
+    private MyGrid<StringGridObject> _myStringGrid;
 
     private void Start()
     {
         //myGrid = new MyGrid<HeatMapGridObject>(20, 10, 4f, 150, transform.position, (MyGrid<HeatMapGridObject> g, int x, int z) => new HeatMapGridObject(g, x, z));
-        myStringGrid = new MyGrid<StringGridObject>(20, 10, 4f, 150, transform.position, (MyGrid<StringGridObject> g, int x, int z) => new StringGridObject(g, x, z));
+        _myStringGrid = new MyGrid<StringGridObject>(20, 10, 4f, 150, transform.position, (MyGrid<StringGridObject> g, int x, int z) => new StringGridObject(g, x, z));
 
         //heatMapGenericVisual.SetGrid(myGrid);
     }
 
     private void Update()
     {
-        Vector3 position = MyGridUtils.GetMouse3DWorldPosition();
+        Vector3 position = MyUtils.GetMouse3DWorldPosition();
 
         //if (Input.GetMouseButtonDown(0))
         //{
@@ -38,13 +38,13 @@ public class Testing : MonoBehaviour
         //    Debug.Log(myGrid.GetGridObject(MyGridUtils.GetMouse3DWorldPosition()));
         //}
 
-        if (Input.GetKeyDown(KeyCode.A)) { myStringGrid.GetGridObject(position).AddLetter("A"); }
-        if (Input.GetKeyDown(KeyCode.B)) { myStringGrid.GetGridObject(position).AddLetter("B"); }
-        if (Input.GetKeyDown(KeyCode.C)) { myStringGrid.GetGridObject(position).AddLetter("C"); }
+        if (Input.GetKeyDown(KeyCode.A)) { _myStringGrid.GetGridObject(position).AddLetter("A"); }
+        if (Input.GetKeyDown(KeyCode.B)) { _myStringGrid.GetGridObject(position).AddLetter("B"); }
+        if (Input.GetKeyDown(KeyCode.C)) { _myStringGrid.GetGridObject(position).AddLetter("C"); }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { myStringGrid.GetGridObject(position).AddLetter("1"); }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { myStringGrid.GetGridObject(position).AddLetter("2"); }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) { myStringGrid.GetGridObject(position).AddLetter("3"); }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { _myStringGrid.GetGridObject(position).AddLetter("1"); }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { _myStringGrid.GetGridObject(position).AddLetter("2"); }
+        if (Input.GetKeyDown(KeyCode.Alpha3)) { _myStringGrid.GetGridObject(position).AddLetter("3"); }
 
     }
 }

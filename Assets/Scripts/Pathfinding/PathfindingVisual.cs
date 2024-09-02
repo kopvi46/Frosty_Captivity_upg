@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class PathfindingVisual : MonoBehaviour
 {
-    [SerializeField] private int width;
-    [SerializeField] private int depth;
-    [SerializeField] private float cellSize;
-    [SerializeField] private int fontSize;
+    [SerializeField] private int _width;
+    [SerializeField] private int _depth;
+    [SerializeField] private float _cellSize;
+    [SerializeField] private int _fontSize;
 
-    private Pathfinding pathfinding;
-    private MyGrid<PathNode> myGrid;
-    private Mesh mesh;
-    private bool updateMesh;
+    private Pathfinding _pathfinding;
+    private MyGrid<PathNode> _myGrid;
+    private Mesh _mesh;
+    private bool _updateMesh;
 
     private void Awake()
     {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        _mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = _mesh;
     }
 
     private void Start()
     {
-        pathfinding = new Pathfinding(width, depth, cellSize, fontSize, transform.position);
-        SetGrid(pathfinding.GetGrid());
+        _pathfinding = new Pathfinding(_width, _depth, _cellSize, _fontSize, transform.position);
+        SetGrid(_pathfinding.GetGrid());
     }
 
     public void SetGrid(MyGrid<PathNode> myGrid)
     {
-        this.myGrid = myGrid;
+        this._myGrid = myGrid;
         UpdateHeatMapVisual();
 
         myGrid.OnGridValueChanged += MyGrid_OnGridValueChanged;
@@ -36,24 +36,24 @@ public class PathfindingVisual : MonoBehaviour
 
     private void MyGrid_OnGridValueChanged(object sender, MyGrid<PathNode>.OnGridValueChangedEventArgs e)
     {
-        updateMesh = true;
+        _updateMesh = true;
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            Vector3 mouseWorldPosition = MyGridUtils.GetMouse3DWorldPosition();
-            pathfinding.GetGrid().GetXZ(mouseWorldPosition, out int x, out int z);
-            pathfinding.GetNode(x, z).SetIsWalkable(!pathfinding.GetNode(x, z).isWalkable);
+            Vector3 mouseWorldPosition = MyUtils.GetMouse3DWorldPosition();
+            _pathfinding.GetGrid().GetXZ(mouseWorldPosition, out int x, out int z);
+            _pathfinding.GetNode(x, z).SetIsWalkable(!_pathfinding.GetNode(x, z).isWalkable);
         }
     }
 
     private void LateUpdate()
     {
-        if (updateMesh)
+        if (_updateMesh)
         {
-            updateMesh = false;
+            _updateMesh = false;
 
             UpdateHeatMapVisual();
         }
@@ -61,28 +61,28 @@ public class PathfindingVisual : MonoBehaviour
 
     private void UpdateHeatMapVisual()
     {
-        MeshUtils.CreateEmptyMeshArrays(myGrid.Width * myGrid.Depth, out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
+        MeshUtils.CreateEmptyMeshArrays(_myGrid.Width * _myGrid.Depth, out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
 
-        for (int x = 0; x < myGrid.Width; x++)
+        for (int x = 0; x < _myGrid.Width; x++)
         {
-            for (int z = 0; z < myGrid.Depth; z++)
+            for (int z = 0; z < _myGrid.Depth; z++)
             {
-                int index = x * myGrid.Depth + z;
-                Vector3 quadSize = new Vector3(1, 0, 1) * myGrid.CellSize;
+                int index = x * _myGrid.Depth + z;
+                Vector3 quadSize = new Vector3(1, 0, 1) * _myGrid.CellSize;
 
-                PathNode pathNode = myGrid.GetGridObject(x, z);
+                PathNode pathNode = _myGrid.GetGridObject(x, z);
 
                 if (pathNode.isWalkable)
                 {
                     quadSize = Vector3.zero;
                 }
 
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, (myGrid.GetWorldPosition(x, z) + quadSize * .5f) - transform.position, 0f, quadSize, Vector2.zero, Vector2.zero);
+                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, (_myGrid.GetWorldPosition(x, z) + quadSize * .5f) - transform.position, 0f, quadSize, Vector2.zero, Vector2.zero);
             }
         }
 
-        mesh.vertices = vertices;
-        mesh.uv = uv;
-        mesh.triangles = triangles;
+        _mesh.vertices = vertices;
+        _mesh.uv = uv;
+        _mesh.triangles = triangles;
     }
 }

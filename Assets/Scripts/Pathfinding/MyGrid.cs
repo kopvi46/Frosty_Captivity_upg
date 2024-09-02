@@ -7,8 +7,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class MyGrid<TGridObject>
 {
-    private const int HEAT_MAP_MAX_VALUE = 100;
-    private const int HEAT_MAP_MIN_VALUE = 0;
+    //specific fields for Heat Map
+    //private const int HEAT_MAP_MAX_VALUE = 100;
+    //private const int HEAT_MAP_MIN_VALUE = 0;
 
     public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
     public class OnGridValueChangedEventArgs : EventArgs
@@ -43,7 +44,7 @@ public class MyGrid<TGridObject>
             }
         }
 
-        bool showDebug = false;
+        bool showDebug = true;
         if (showDebug)
         {
             TextMesh[,] debugTextArray = new TextMesh[width, depth];
@@ -52,7 +53,7 @@ public class MyGrid<TGridObject>
             {
                 for (int z = 0; z < _gridArray.GetLength(1); z++)
                 {
-                    debugTextArray[x, z] = MyGridUtils.CreateWorldText(_gridArray[x, z]?.ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, fontSize, Color.white, TextAnchor.MiddleCenter);
+                    debugTextArray[x, z] = MyUtils.CreateWorldText(_gridArray[x, z]?.ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, fontSize, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x + 1, z), Color.white, 100f);
 
