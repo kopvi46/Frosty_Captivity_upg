@@ -7,8 +7,8 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class MyGrid<TGridObject>
 {
-    public const int HEAT_MAP_MAX_VALUE = 100;
-    public const int HEAT_MAP_MIN_VALUE = 0;
+    private const int HEAT_MAP_MAX_VALUE = 100;
+    private const int HEAT_MAP_MIN_VALUE = 0;
 
     public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
     public class OnGridValueChangedEventArgs : EventArgs
@@ -43,7 +43,7 @@ public class MyGrid<TGridObject>
             }
         }
 
-                bool showDebug = true;
+        bool showDebug = false;
         if (showDebug)
         {
             TextMesh[,] debugTextArray = new TextMesh[width, depth];

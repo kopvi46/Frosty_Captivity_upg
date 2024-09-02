@@ -13,11 +13,13 @@ public class Pathfinding
     private MyGrid<PathNode> _myGrid;
     private List<PathNode> _openList;
     private List<PathNode> _closedList;
+    private Vector3 _position;
 
-    public Pathfinding(int width, int depth, Vector3 position)
+    public Pathfinding(int width, int depth, float cellSize, int fontSisze, Vector3 position)
     {
         Instance = this;
-        _myGrid = new MyGrid<PathNode>(width, depth, 4f, 150, position, (MyGrid<PathNode> g, int x, int z) => new PathNode(g, x, z));
+        _myGrid = new MyGrid<PathNode>(width, depth, cellSize, fontSisze, position, (MyGrid<PathNode> g, int x, int z) => new PathNode(g, x, z));
+        _position = position;
     }
 
     public MyGrid<PathNode> GetGrid()
@@ -101,6 +103,7 @@ public class Pathfinding
         _myGrid.GetXZ(endWorldPosotion, out int endX, out int endZ);
 
         List<PathNode> path = FindPath(startX, startZ, endX, endZ);
+
         if (path == null)
         {
             return null;
@@ -109,7 +112,8 @@ public class Pathfinding
             List<Vector3> vectorPath = new List<Vector3>();
             foreach (PathNode pathNode in path)
             {
-                vectorPath.Add(new Vector3(pathNode.x, pathNode.z) * _myGrid.CellSize + Vector3.one * _myGrid.CellSize * .5f);
+                Vector3 nodeWorldPosition = new Vector3(pathNode.x * _myGrid.CellSize, 0, pathNode.z * _myGrid.CellSize) + new Vector3(_myGrid.CellSize * 0.5f, 0, _myGrid.CellSize * 0.5f) + _position;
+                vectorPath.Add(nodeWorldPosition);
             }
             return vectorPath;
         }

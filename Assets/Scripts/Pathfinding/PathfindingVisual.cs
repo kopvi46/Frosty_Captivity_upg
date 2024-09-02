@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PathfindingVisual : MonoBehaviour
 {
+    [SerializeField] private int width;
+    [SerializeField] private int depth;
+    [SerializeField] private float cellSize;
+    [SerializeField] private int fontSize;
+
+    private Pathfinding pathfinding;
     private MyGrid<PathNode> myGrid;
     private Mesh mesh;
     private bool updateMesh;
@@ -12,6 +18,12 @@ public class PathfindingVisual : MonoBehaviour
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+    }
+
+    private void Start()
+    {
+        pathfinding = new Pathfinding(width, depth, cellSize, fontSize, transform.position);
+        SetGrid(pathfinding.GetGrid());
     }
 
     public void SetGrid(MyGrid<PathNode> myGrid)
@@ -25,6 +37,16 @@ public class PathfindingVisual : MonoBehaviour
     private void MyGrid_OnGridValueChanged(object sender, MyGrid<PathNode>.OnGridValueChangedEventArgs e)
     {
         updateMesh = true;
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector3 mouseWorldPosition = MyGridUtils.GetMouse3DWorldPosition();
+            pathfinding.GetGrid().GetXZ(mouseWorldPosition, out int x, out int z);
+            pathfinding.GetNode(x, z).SetIsWalkable(!pathfinding.GetNode(x, z).isWalkable);
+        }
     }
 
     private void LateUpdate()
@@ -55,7 +77,7 @@ public class PathfindingVisual : MonoBehaviour
                     quadSize = Vector3.zero;
                 }
 
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, myGrid.GetWorldPosition(x, z) + quadSize * .5f, 0f, quadSize, Vector2.zero, Vector2.zero);
+                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, (myGrid.GetWorldPosition(x, z) + quadSize * .5f) - transform.position, 0f, quadSize, Vector2.zero, Vector2.zero);
             }
         }
 
