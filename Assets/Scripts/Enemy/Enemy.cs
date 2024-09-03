@@ -4,12 +4,80 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private enum State
+    {
+        Patrol,
+        Chase,
+        Attack,
+    }
+    private State _state;
     private int _moveSpeed = 3;
     private List<Vector3> _pathVectorList;
     private int _currentPathIndex;
+    private float _attackRange = 3f;
+    private float _chaseRange = 15f;
+    private float _patrolTimer;
+    private float _patrolTargetChangeDelay = 3f;
+    private float _attackTimer;
+    private float _attackDelay = 2f;
+    private int _damage = 10;
+
+    private void Start()
+    {
+        _state = State.Patrol;
+
+        _patrolTimer = _patrolTargetChangeDelay;
+        _attackTimer = _attackDelay;
+    }
 
     private void Update()
     {
+        switch (_state)
+        {
+            case State.Patrol:
+                _patrolTimer += Time.deltaTime;
+
+                if (_patrolTimer >= _patrolTargetChangeDelay)
+                {
+                    _patrolTimer = 0f;
+                    SetRandomPatrolTargetInRange(10);
+                }
+
+                if (Vector3.Distance(transform.position, Player.Instance.transform.position) < _chaseRange)
+                {
+                    _state = State.Chase;
+                }
+                break;
+            case State.Chase:
+                if (Vector3.Distance(transform.position, Player.Instance.transform.position) < _attackRange)
+                {
+                    _state = State.Attack;
+                } else if (Vector3.Distance(transform.position, Player.Instance.transform.position) > _chaseRange)
+                {
+                    _state = State.Patrol;
+                } else
+                {
+                    SetTargetPosition(Player.Instance.transform.position);
+                }
+                break;
+            case State.Attack:
+                _attackTimer += Time.deltaTime;
+
+                if (_attackTimer >= _attackDelay)
+                {
+                    _attackTimer = 0f;
+                    PlayerHealthManager.Instance.PlayerHealth -= _damage;
+                }
+
+                if (Vector3.Distance(transform.position, Player.Instance.transform.position) > _attackRange)
+                {
+                    StopMoving();
+                    _attackTimer = _attackDelay;
+                    _state = State.Chase;
+                }
+                break;
+        }
+
         //if (Input.GetMouseButtonDown(0))
         //{
         //    Vector3 mouseWorldPosition = MyGridUtils.GetMouse3DWorldPosition();
@@ -17,7 +85,7 @@ public class Enemy : MonoBehaviour
         //    _currentPathIndex = 0;
         //}
 
-        SetTargetPosition(Player.Instance.transform.position);
+        //SetTargetPosition(Player.Instance.transform.position);
 
         HandleMovement();
     }
@@ -51,7 +119,7 @@ public class Enemy : MonoBehaviour
         _pathVectorList = null;
     }
 
-    public void SetTargetPosition(Vector3 targetPosition)
+    private void SetTargetPosition(Vector3 targetPosition)
     {
         _currentPathIndex = 0;
 
@@ -68,5 +136,11 @@ public class Enemy : MonoBehaviour
             //    Debug.DrawLine(startPosition, endPosition, Color.green, 20f);
             //}
         }
+    }
+
+    private void SetRandomPatrolTargetInRange(int range)
+    {
+        Vector3 targetPosition = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
+        SetTargetPosition(targetPosition);
     }
 }
