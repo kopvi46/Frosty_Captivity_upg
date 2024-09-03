@@ -8,6 +8,7 @@ public class PathfindingVisual : MonoBehaviour
     [SerializeField] private int _depth;
     [SerializeField] private float _cellSize;
     [SerializeField] private int _fontSize;
+    [SerializeField] private LayerMask _obstacleLayerMask;
 
     private Pathfinding _pathfinding;
     private MyGrid<PathNode> _myGrid;
@@ -24,6 +25,19 @@ public class PathfindingVisual : MonoBehaviour
     {
         _pathfinding = new Pathfinding(_width, _depth, _cellSize, _fontSize, transform.position);
         SetGrid(_pathfinding.GetGrid());
+
+        for (int x = 0; x < _myGrid.Width; x++)
+        {
+            for (int z = 0; z <  _myGrid.Depth; z++)
+            {
+                Vector3 nodeWorldPosition = _myGrid.GetWorldPosition(x, z) + new Vector3(_myGrid.CellSize, 0, _myGrid.CellSize) * .5f;
+
+                if (Physics.CheckBox(nodeWorldPosition, new Vector3(_myGrid.CellSize * .5f, .5f, _myGrid.CellSize * .5f), Quaternion.identity, _obstacleLayerMask))
+                {
+                    _myGrid.GetGridObject(x, z).SetIsWalkable(false);
+                }
+            }
+        }
     }
 
     public void SetGrid(MyGrid<PathNode> myGrid)

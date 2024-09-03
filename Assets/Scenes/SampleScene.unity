@@ -1600,7 +1600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &499412247
 Transform:
   m_ObjectHideFlags: 0
@@ -2270,6 +2270,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SnowPile (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2507921003750975175, guid: a60ab17a78cd6714f995e239f1c0638d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3149915451945984196, guid: a60ab17a78cd6714f995e239f1c0638d,
         type: 3}
@@ -3260,6 +3265,9 @@ MonoBehaviour:
   _depth: 25
   _cellSize: 4
   _fontSize: 150
+  _obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!4 &1264173657
 Transform:
   m_ObjectHideFlags: 0
@@ -5298,6 +5306,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SnowPile (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2507921003750975175, guid: a60ab17a78cd6714f995e239f1c0638d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3149915451945984196, guid: a60ab17a78cd6714f995e239f1c0638d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6085,6 +6098,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SnowPile
+      objectReference: {fileID: 0}
+    - target: {fileID: 2507921003750975175, guid: a60ab17a78cd6714f995e239f1c0638d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3149915451945984196, guid: a60ab17a78cd6714f995e239f1c0638d,
         type: 3}
