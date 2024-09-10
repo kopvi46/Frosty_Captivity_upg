@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7793350673067851576}
   - component: {fileID: 8111282502200379811}
   - component: {fileID: 598995427589675623}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SnowPile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

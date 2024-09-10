@@ -91,7 +91,7 @@ public class PathfindingVisual : MonoBehaviour
                     quadSize = Vector3.zero;
                 }
 
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, (_myGrid.GetWorldPosition(x, z) + quadSize * .5f) - transform.position, 0f, quadSize, Vector2.zero, Vector2.zero);
+                //MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, (_myGrid.GetWorldPosition(x, z) + quadSize * .5f) - transform.position, 0f, quadSize, Vector2.zero, Vector2.zero);
             }
         }
 

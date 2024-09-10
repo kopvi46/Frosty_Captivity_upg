@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IInteractable
 {
     private enum State
     {
@@ -21,6 +21,30 @@ public class Enemy : MonoBehaviour
     private float _attackTimer;
     private float _attackDelay = 2f;
     private int _damage = 10;
+    private int _enemyHealth = 100;
+
+    public int EnemyHealth
+    {
+        get
+        {
+            return _enemyHealth;
+        }
+        set
+        {
+            int enemyMinHealth = 0;
+            int enemyMaxHealth = 100;
+            if (value < enemyMinHealth)
+            {
+                _enemyHealth = enemyMinHealth;
+            } else if (value > enemyMaxHealth)
+            {
+                _enemyHealth = enemyMaxHealth;
+            } else
+            {
+                _enemyHealth = value;
+            }
+        }
+    }
 
     private void Start()
     {
@@ -142,5 +166,36 @@ public class Enemy : MonoBehaviour
     {
         Vector3 targetPosition = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
         SetTargetPosition(targetPosition);
+    }
+
+    public void Interact(Player player)
+    {
+        Item item = PlayerInventory.Instance.PlayerRightHandPoint.GetComponentInChildren<Item>();
+        EquipmentSO equipmentSO = item?.ItemSO as EquipmentSO;
+
+        if (item != null && equipmentSO != null
+            && PlayerInventory.Instance.PlayerRightHandPoint.childCount != 0
+            && equipmentSO.equipmentType == EquipmentSO.EquipmentType.Spear)
+        {
+            InventoryEquipmentItem inventoryEquipmentItem = InventoryManager.Instance.RightHandSlot.GetComponentInChildren<InventoryEquipmentItem>();
+
+            if (inventoryEquipmentItem != null)
+            {
+                item.durability -= 5;
+                item.InvokeOnDurabilityChanged();
+                inventoryEquipmentItem.durability = item.durability;
+                inventoryEquipmentItem.RefreshDurability();
+            }
+
+            EnemyHealth -= player.playerDamege;
+
+            if (_enemyHealth <= 0)
+            {
+                Destroy(gameObject);
+            }
+        } else
+        {
+            Debug.Log("You don't have any weapon. Better run while alive!");
+        }
     }
 }
