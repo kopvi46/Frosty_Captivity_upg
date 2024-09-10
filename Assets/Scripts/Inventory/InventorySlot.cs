@@ -18,7 +18,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             //Slot is not empty
             InventoryItem storedItem = GetComponentInChildren<InventoryItem>();
 
-            if (storedItem.ItemSO.isStackable && storedItem.ItemSO.itemType == droppedItem.ItemSO.itemType)
+            if (storedItem.ItemSO.isStackable && storedItem.ItemSO.IsSameItemType(droppedItem.ItemSO))
             {
                 //Slot have the same stackable item
                 if (storedItem.amount + droppedItem.amount <= storedItem.ItemSO.maxStackAmount)

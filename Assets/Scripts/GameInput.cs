@@ -40,4 +40,9 @@ public class GameInput : MonoBehaviour
 
         return inputVector;
     }
+
+    //public bool IsInteractPressed()
+    //{
+    //    return _playerInputActions.Player.Interact.IsPressed();
+    //}
 }

@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     private Vector3 _lastInteractDirection;
     private IInteractable _selectedObject;
 
+    public int playerDamege;
+
     private void Awake()
     {
         Instance = this;
