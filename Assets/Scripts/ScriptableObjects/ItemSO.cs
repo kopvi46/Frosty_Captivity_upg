@@ -20,4 +20,9 @@ public abstract class ItemSO : ScriptableObject
     public Sprite sprite;
 
     public abstract Enum GetSpecificItemType();
+
+    public bool IsSameItemType(ItemSO otherItemSO)
+    {
+        return GetSpecificItemType().Equals(otherItemSO.GetSpecificItemType());
+    }
 }
